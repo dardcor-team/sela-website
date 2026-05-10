@@ -93,9 +93,9 @@ class GroupService
         $userClass = $profile->class_name ?? 'Kelas Default';
 
         $groupName = $userClass
-            . "-"
+            . " "
             . $request->course_name
-            . "-Kelompok "
+            . " Kelompok "
             . $request->group_number;
 
         $group = Group::create([
@@ -115,6 +115,19 @@ class GroupService
             'role' => 'leader',
             'joined_at' => now(),
         ]);
+
+        try {
+            $notificationService = app(\App\Services\NotificationService::class);
+            $notificationService->createNotification([
+                'user_id' => auth()->id(),
+                'title' => 'Grup Baru Dibuat',
+                'message' => 'Grup "' . $group->name . '" berhasil dibuat. Silakan bagikan kode undangan.',
+                'type' => 'group',
+                'related_id' => $group->id,
+            ]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Group FCM failed: ' . $e->getMessage());
+        }
 
         return $group;
     }

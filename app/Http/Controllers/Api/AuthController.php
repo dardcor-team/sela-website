@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -21,6 +22,8 @@ class AuthController extends Controller
 
         $user = $service->register($validated);
         $token = $user->createToken('auth-token')->plainTextToken;
+
+        Cache::tags(['users'])->flush();
 
         return response()->json([
             'user' => [
@@ -70,21 +73,29 @@ class AuthController extends Controller
             $profile->save();
         }
 
+        Cache::tags(["user_{$user->id}"])->flush();
+
         return response()->json(['message' => 'Profile updated']);
     }
 
     public function me(Request $request): JsonResponse
     {
-        $user = $request->user()->load('profile');
-        return response()->json([
-            'user' => [
+        $userId = $request->user()->id;
+
+        $data = Cache::tags(["user_{$userId}"])->remember("auth_me_{$userId}", 300, function () use ($request) {
+            $user = $request->user()->load('profile');
+            return [
                 'id' => $user->id,
                 'email' => $user->email,
                 'username' => $user->username,
                 'full_name' => $user->profile?->full_name ?? $user->username,
                 'class_name' => $user->profile?->class_name,
                 'avatar_url' => $user->profile?->avatar_url,
-            ]
+            ];
+        });
+
+        return response()->json([
+            'user' => $data
         ]);
     }
 

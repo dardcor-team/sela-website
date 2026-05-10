@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subtask;
+use App\Services\DashboardService;
 use App\Services\SubTaskService;
+use App\Services\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SubTaskController extends Controller
 {
@@ -17,6 +21,14 @@ class SubTaskController extends Controller
         ]);
 
         $data = $service->createSubtask($task_id, $request);
+
+        $userId = auth()->id();
+        Cache::tags(["task_{$task_id}"])->flush();
+        Cache::tags(["user_tasks_{$userId}"])->flush();
+        Cache::tags(["dashboard_{$userId}"])->flush();
+
+        Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => app(TaskService::class)->getTasksByUser($userId));
+        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json([
             "message" => "Subtask created",
@@ -31,7 +43,36 @@ class SubTaskController extends Controller
             'user_id' => 'required|uuid|exists:profiles,id',
         ]);
 
+        $subtask = Subtask::findOrFail($subtask_id);
+        $taskId = $subtask->task_id;
+
         $data = $service->updateProgress($subtask_id, $request->user_id, $request->progress);
+
+        if ($request->progress == 100) {
+            $task = \App\Models\Task::find($taskId);
+            if ($task && $task->due_date && \Carbon\Carbon::now()->gt($task->due_date)) {
+                if ($task->is_group && $task->group_id) {
+                    $group = \App\Models\Group::find($task->group_id);
+                    if ($group) {
+                        app(\App\Services\NotificationService::class)->notifyLecturersByGroup(
+                            $task->group_id,
+                            "Subtask Terlambat",
+                            "Group '{$group->name}' menyelesaikan subtask dari '{$task->title}' untuk mata kuliah {$task->subject} melewati batas tenggat waktu.",
+                            "task_submission",
+                            $taskId
+                        );
+                    }
+                }
+            }
+        }
+
+        $userId = auth()->id();
+        Cache::tags(["task_{$taskId}"])->flush();
+        Cache::tags(["user_tasks_{$userId}"])->flush();
+        Cache::tags(["dashboard_{$userId}"])->flush();
+
+        Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => app(TaskService::class)->getTasksByUser($userId));
+        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json([
             "message" => "Progress updated",
@@ -41,7 +82,18 @@ class SubTaskController extends Controller
 
     public function destroy($subtask_id, SubTaskService $service)
     {
+        $subtask = Subtask::findOrFail($subtask_id);
+        $taskId = $subtask->task_id;
+
         $service->delete($subtask_id);
+
+        $userId = auth()->id();
+        Cache::tags(["task_{$taskId}"])->flush();
+        Cache::tags(["user_tasks_{$userId}"])->flush();
+        Cache::tags(["dashboard_{$userId}"])->flush();
+
+        Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => app(TaskService::class)->getTasksByUser($userId));
+        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json([
             "message" => "Subtask deleted",

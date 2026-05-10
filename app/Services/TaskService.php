@@ -244,7 +244,7 @@ class TaskService
                 ]);
             } else {
                 $groupMembers = \App\Models\GroupMember::where('group_id', $task->group_id)->get();
-                
+
                 $group = \App\Models\Group::find($task->group_id);
                 $groupName = $group ? $group->name : 'Grup';
 
@@ -257,6 +257,14 @@ class TaskService
                         'related_id' => $task->id,
                     ]);
                 }
+
+                $notificationService->notifyLecturersByGroup(
+                    $task->group_id,
+                    'Tugas Baru di Kelas',
+                    'Tugas baru "' . $task->title . '" ditambahkan di grup ' . $groupName . '.',
+                    'lecturer_task',
+                    $task->id
+                );
             }
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Task FCM failed: ' . $e->getMessage());

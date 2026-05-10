@@ -2,7 +2,7 @@
 
 Laravel 12 backend for the Sela project management platform. The current repo is configured around **Supabase PostgreSQL** and **Laravel Sanctum**.
 
-> Status note: this repository still contains some legacy controller/service naming (`UserAbility`, `SubTask`, `SupportFile`, etc.), but the active PostgreSQL schema is imported from `db.sql` through `database/migrations/2026_04_07_150000_apply_supabase_schema_from_db_sql.php`.
+> Status note: this repository still contains some legacy controller/service naming (`UserAbility`, `SubTask`, `SupportFile`, etc.). The PostgreSQL schema is now managed natively through standard Laravel Migrations (`database/migrations/`) and JSON-backed Seeders, fully replacing the legacy `db.sql` import.
 
 **Production:** `https://sela.my.id/api`
 
@@ -22,8 +22,8 @@ Laravel 12 backend for the Sela project management platform. The current repo is
 - `routes/api.php` — active API routes
 - `app/Http/Controllers/Api` — API controllers
 - `app/Models` — current Eloquent models
-- `db.sql` — source schema imported for PostgreSQL/Supabase
-- `database/migrations/2026_04_07_150000_apply_supabase_schema_from_db_sql.php` — applies `db.sql`
+- `database/migrations/` — standard Laravel migration files handling schema, RLS policies, and triggers
+- `database/seeders/` & `database/data/` — JSON-backed seeders for initial data (courses, classes, test users)
 - `deploy/` — deployment scripts and Nginx config
 
 ## Local Setup (Cara Menjalankan Server)
@@ -40,7 +40,7 @@ Laravel 12 backend for the Sela project management platform. The current repo is
 composer install
 php artisan key:generate
 php artisan storage:link
-php artisan migrate
+php artisan migrate --seed
 php artisan serve --host=<YOUR-IP> --port=8000
 ```
 
@@ -379,17 +379,17 @@ This section reflects the current `routes/api.php` file.
 
 ## Database Schema
 
-For PostgreSQL/Supabase, the effective schema is the SQL file at the project root:
+The backend database is structured for **PostgreSQL/Supabase** and is managed via native Laravel Migrations.
 
-- `db.sql`
+### Migrations & Seeders
 
-It is applied by:
+- **Schema:** Defined structurally inside `database/migrations/` using standard Laravel Schema Blueprints.
+- **Supabase native features:** Row Level Security (RLS), native Triggers, PostgreSQL Functions, and `supabase_realtime` publications are injected safely via raw DB statements in a dedicated migration (`_apply_supabase_rls_and_triggers.php`).
+- **Seed Data:** Initial setup data (like default courses, classes, and test accounts) is stored in `database/data/*.json` and seeded automatically when you run `php artisan migrate --seed`.
 
-- `database/migrations/2026_04_07_150000_apply_supabase_schema_from_db_sql.php`
+### Main tables
 
-### Main tables in `db.sql`
-
-- `profiles`
+- `profiles` (links to `auth.users`)
 - `courses`
 - `classes`
 - `groups`
@@ -404,11 +404,11 @@ It is applied by:
 
 ### Schema notes
 
-- IDs are mostly UUIDs
-- `profiles.id` references `auth.users`
-- storage policies depend on Supabase `storage.objects` and `storage.buckets`
-- several RLS policies depend on Supabase `auth.uid()`
-- the migration imports trigger/function definitions from `db.sql`
+- IDs are mostly UUIDs.
+- `profiles.id` references the `users` table, resolving local relationships while integrating smoothly with Supabase `auth.users` behavior.
+- Storage policies depend on Supabase `storage.objects` and `storage.buckets`.
+- Several RLS policies depend on Supabase `auth.uid()`.
+- Auth triggers mapped from Supabase synchronize directly into the `profiles` table.
 
 ## Current Models
 
@@ -438,9 +438,8 @@ This repo is in a transition state:
 If documentation and implementation ever disagree, use these as the source of truth in order:
 
 1. `routes/api.php`
-2. `db.sql`
-3. `database/migrations/2026_04_07_150000_apply_supabase_schema_from_db_sql.php`
-4. `app/Models`
+2. `database/migrations/` (The new source of truth for the schema)
+3. `app/Models`
 
 ## Deployment
 

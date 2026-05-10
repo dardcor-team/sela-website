@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\EtholService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class EtholController extends Controller
@@ -79,7 +80,10 @@ class EtholController extends Controller
     public function logout(Request $request, EtholService $service): JsonResponse
     {
         try {
-            $service->logout($request->user()->id);
+            $userId = $request->user()->id;
+            $service->logout($userId);
+
+            Cache::tags(["ethol_{$userId}"])->flush();
 
             return response()->json([
                 'success' => true,
@@ -101,7 +105,11 @@ class EtholController extends Controller
     public function schedule(Request $request, EtholService $service): JsonResponse
     {
         try {
-            $data = $service->getSchedule($request->user()->id);
+            $userId = $request->user()->id;
+
+            $data = Cache::tags(["ethol_{$userId}"])->remember("ethol_schedule_{$userId}", 900, function () use ($userId, $service) {
+                return $service->getSchedule($userId);
+            });
 
             return response()->json([
                 'success' => true,
@@ -123,7 +131,11 @@ class EtholController extends Controller
     public function homework(Request $request, EtholService $service): JsonResponse
     {
         try {
-            $data = $service->getHomework($request->user()->id);
+            $userId = $request->user()->id;
+
+            $data = Cache::tags(["ethol_{$userId}"])->remember("ethol_homework_{$userId}", 900, function () use ($userId, $service) {
+                return $service->getHomework($userId);
+            });
 
             return response()->json([
                 'success' => true,
@@ -145,7 +157,11 @@ class EtholController extends Controller
     public function attendance(Request $request, EtholService $service): JsonResponse
     {
         try {
-            $data = $service->getAttendance($request->user()->id);
+            $userId = $request->user()->id;
+
+            $data = Cache::tags(["ethol_{$userId}"])->remember("ethol_attendance_{$userId}", 900, function () use ($userId, $service) {
+                return $service->getAttendance($userId);
+            });
 
             return response()->json([
                 'success' => true,

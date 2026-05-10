@@ -11,25 +11,35 @@ class LecturerService
     public function getClasses($lecturerId)
     {
         $lecturerClasses = LecturerClass::where('lecturer_id', $lecturerId)->get();
-        
+
         return $lecturerClasses->map(function ($lc) {
             $className = $lc->class_name;
-            
-            $groups = DB::table('groups')->where('class_name', $className);
-            $totalGroups = $groups->count();
-            
-            $groupIds = DB::table('groups')->where('class_name', $className)->pluck('id');
-            $totalTasks = DB::table('tasks')->whereIn('group_id', $groupIds)->where('is_group', true)->count();
-            
-            $lastTask = DB::table('tasks')
-                ->whereIn('group_id', $groupIds)
-                ->orderBy('created_at', 'desc')
-                ->first();
-            
+
+            // Fetch exact class details if needed, though class_name is direct now
+            $class = DB::table('classes')->where('name', $className)->first();
+
+            $groupIds = collect();
+            $totalGroups = 0;
+            if ($className) {
+                $groupIds = DB::table('groups')->where('class_name', $className)->pluck('id');
+                $totalGroups = $groupIds->count();
+            }
+
+            $totalTasks = $groupIds->isNotEmpty()
+                ? DB::table('tasks')->whereIn('group_id', $groupIds)->where('is_group', true)->count()
+                : 0;
+
+            $lastTask = $groupIds->isNotEmpty()
+                ? DB::table('tasks')
+                    ->whereIn('group_id', $groupIds)
+                    ->orderBy('created_at', 'desc')
+                    ->first()
+                : null;
+
             $lastUpdated = $lastTask ? Carbon::parse($lastTask->created_at)->diffForHumans() : 'No activity';
-            
+
             return [
-                'id' => $lc->id,
+                'id' => $class ? $class->id : $lc->id,
                 'name' => $className,
                 'total_groups' => $totalGroups,
                 'total_tasks' => $totalTasks,
@@ -37,25 +47,27 @@ class LecturerService
             ];
         })->values()->toArray();
     }
-    
-    public function getClassTasks($lecturerClassId)
+
+    public function getClassTasks($classId)
     {
-        $lecturerClass = LecturerClass::findOrFail($lecturerClassId);
-        $className = $lecturerClass->class_name;
-        
-        $groups = DB::table('groups')->where('class_name', $className)->get();
-        
+        $class = DB::table('classes')->where('id', $classId)->first();
+        $className = $class ? $class->name : null;
+
+        $groups = $className
+            ? DB::table('groups')->where('class_name', $className)->get()
+            : collect();
+
         $result = [];
         foreach ($groups as $group) {
             $tasks = DB::table('tasks')
                 ->where('group_id', $group->id)
                 ->where('is_group', true)
                 ->get();
-                
+
             foreach ($tasks as $task) {
                 $subtasks = DB::table('subtasks')->where('task_id', $task->id)->get();
                 $totalSubtasks = $subtasks->count();
-                
+
                 $completedSubtasks = 0;
                 foreach ($subtasks as $st) {
                     $progress = DB::table('subtask_progress')
@@ -66,27 +78,27 @@ class LecturerService
                         $completedSubtasks++;
                     }
                 }
-                
+
                 $progressPercent = $totalSubtasks > 0 ? round(($completedSubtasks / $totalSubtasks) * 100) : 0;
-                
+
                 $members = DB::table('group_members')
                     ->join('profiles', 'profiles.id', '=', 'group_members.user_id')
                     ->where('group_members.group_id', $group->id)
                     ->select('profiles.id', 'profiles.full_name as name', 'profiles.avatar_url as avatar')
                     ->get();
-                
-                $countdown = $task->due_date 
+
+                $countdown = $task->due_date
                     ? (int) Carbon::now()->diffInDays(Carbon::parse($task->due_date), false)
                     : 0;
-                
+
                 $dateRange = '';
                 if ($task->start_date && $task->due_date) {
                     $dateRange = Carbon::parse($task->start_date)->format('d M') . ' - ' . Carbon::parse($task->due_date)->format('d M');
                 }
-                
+
                 $result[] = [
                     'id' => $task->id,
-                    'class_id' => $lecturerClass->id,
+                    'class_id' => $classId,
                     'group_name' => $group->name,
                     'task_name' => $task->title,
                     'progress' => (int)$progressPercent,
@@ -109,7 +121,7 @@ class LecturerService
                                 return $s;
                             })
                             ->toArray();
-                        
+
                         return [
                             'name' => $m->name,
                             'avatar_url' => $m->avatar,
@@ -120,21 +132,21 @@ class LecturerService
                 ];
             }
         }
-        
+
         return $result;
     }
-    
+
     public function getTaskOverview($taskId)
     {
         $task = DB::table('tasks')->where('id', $taskId)->first();
         if (!$task) return null;
-        
+
         $group = DB::table('groups')->where('id', $task->group_id)->first();
-        
+
         $subtasks = DB::table('subtasks')->where('task_id', $taskId)->get();
         $totalSubtasks = $subtasks->count();
         $completedSubtasks = 0;
-        
+
         foreach ($subtasks as $st) {
             $progress = DB::table('subtask_progress')
                 ->where('subtask_id', $st->id)
@@ -144,24 +156,24 @@ class LecturerService
                 $completedSubtasks++;
             }
         }
-        
+
         $progressPercent = $totalSubtasks > 0 ? round(($completedSubtasks / $totalSubtasks) * 100) : 0;
-        
+
         $members = DB::table('group_members')
             ->join('profiles', 'profiles.id', '=', 'group_members.user_id')
             ->where('group_members.group_id', $task->group_id)
             ->select('profiles.id', 'profiles.full_name as name', 'profiles.avatar_url as avatar')
             ->get();
-        
-        $countdown = $task->due_date 
+
+        $countdown = $task->due_date
             ? (int) Carbon::now()->diffInDays(Carbon::parse($task->due_date), false)
             : 0;
-            
+
         $dateRange = '';
         if ($task->start_date && $task->due_date) {
             $dateRange = Carbon::parse($task->start_date)->format('d M') . ' - ' . Carbon::parse($task->due_date)->format('d M');
         }
-        
+
         $contributorCounts = [];
         foreach ($members as $m) {
             $doneCount = DB::table('subtask_progress')
@@ -174,7 +186,7 @@ class LecturerService
         }
         arsort($contributorCounts);
         $topContributors = implode(', ', array_slice(array_keys($contributorCounts), 0, 2));
-        
+
         $recentProgress = DB::table('subtask_progress')
             ->join('subtasks', 'subtasks.id', '=', 'subtask_progress.subtask_id')
             ->join('profiles', 'profiles.id', '=', 'subtask_progress.user_id')
@@ -182,11 +194,11 @@ class LecturerService
             ->orderBy('subtask_progress.updated_at', 'desc')
             ->select('profiles.full_name', 'subtasks.title', 'subtask_progress.progress')
             ->first();
-        
-        $recentUpdate = $recentProgress 
+
+        $recentUpdate = $recentProgress
             ? $recentProgress->full_name . ' ' . ($recentProgress->progress >= 100 ? 'done' : 'in progress') . ' "' . $recentProgress->title . '"'
             : 'No recent activity';
-        
+
         return [
             'id' => $task->id,
             'task_name' => $task->title,
@@ -216,7 +228,7 @@ class LecturerService
                         return $s;
                     })
                     ->toArray();
-                
+
                 return [
                     'name' => $m->name,
                     'avatar_url' => $m->avatar,
@@ -226,18 +238,19 @@ class LecturerService
             })->toArray(),
         ];
     }
-    
+
     public function updateClasses($lecturerId, array $classNames)
     {
         LecturerClass::where('lecturer_id', $lecturerId)->delete();
-        
+
         foreach ($classNames as $className) {
             LecturerClass::create([
+                'id' => (string) \Illuminate\Support\Str::uuid(),
                 'lecturer_id' => $lecturerId,
                 'class_name' => $className,
             ]);
         }
-        
+
         return $this->getClasses($lecturerId);
     }
 }

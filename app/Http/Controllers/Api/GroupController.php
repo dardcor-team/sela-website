@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\DashboardService;
 use App\Services\GroupService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class GroupController extends Controller
 {
@@ -13,7 +15,11 @@ class GroupController extends Controller
     {
         $search = $request->search;
 
-        $groups = $service->getGroupsByUser($user_id, $search);
+        $cacheKey = "groups_user_{$user_id}" . ($search ? '_' . md5($search) : '');
+
+        $groups = Cache::tags(["user_groups_{$user_id}"])->remember($cacheKey, 600, function () use ($user_id, $search, $service) {
+            return $service->getGroupsByUser($user_id, $search);
+        });
 
         return response()->json([
             "groups" => $groups,
@@ -22,7 +28,9 @@ class GroupController extends Controller
 
     public function detail($group_id, GroupService $service)
     {
-        $group = $service->getGroupDetail($group_id);
+        $group = Cache::tags(["group_{$group_id}"])->remember("group_detail_{$group_id}", 600, function () use ($group_id, $service) {
+            return $service->getGroupDetail($group_id);
+        });
 
         return response()->json($group);
     }
@@ -38,6 +46,13 @@ class GroupController extends Controller
         ]);
 
         $group = $service->createGroup($request);
+
+        $userId = auth()->id();
+        Cache::tags(["user_groups_{$userId}"])->flush();
+        Cache::tags(["dashboard_{$userId}"])->flush();
+
+        Cache::tags(["user_groups_{$userId}"])->remember("groups_user_{$userId}", 600, fn() => $service->getGroupsByUser($userId));
+        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json([
             "message" => "Group created",
@@ -56,6 +71,21 @@ class GroupController extends Controller
             auth()->id()
         );
 
+        $userId = auth()->id();
+        $groupId = $data->id ?? null;
+
+        Cache::tags(["user_groups_{$userId}"])->flush();
+        Cache::tags(["dashboard_{$userId}"])->flush();
+        if ($groupId) {
+            Cache::tags(["group_{$groupId}"])->flush();
+            Cache::tags(["group_members_{$groupId}"])->flush();
+
+            Cache::tags(["group_{$groupId}"])->remember("group_detail_{$groupId}", 600, fn() => $service->getGroupDetail($groupId));
+        }
+
+        Cache::tags(["user_groups_{$userId}"])->remember("groups_user_{$userId}", 600, fn() => $service->getGroupsByUser($userId));
+        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
+
         return response()->json([
             "message" => "Join group success",
             "data" => $data,
@@ -66,6 +96,14 @@ class GroupController extends Controller
     {
         $group = \App\Models\Group::findOrFail($id);
         $group->delete();
+
+        $userId = auth()->id();
+        Cache::tags(["group_{$id}"])->flush();
+        Cache::tags(["group_members_{$id}"])->flush();
+        Cache::tags(["user_groups_{$userId}"])->flush();
+        Cache::tags(["dashboard_{$userId}"])->flush();
+
+        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json(null, 204);
     }

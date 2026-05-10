@@ -9,6 +9,11 @@ class DashboardService
 {
     public function getDashboard($user_id, $search = null)
     {
+        return $this->buildDashboard($user_id, $search);
+    }
+
+    private function buildDashboard($user_id, $search = null)
+    {
         $groupTasks = DB::table('group_members')
             ->join('groups', 'groups.id', '=', 'group_members.group_id')
             ->join('tasks', 'tasks.group_id', '=', 'groups.id')

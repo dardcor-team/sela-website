@@ -1,0 +1,12 @@
+[
+    {
+        "id": "task-files",
+        "name": "task-files",
+        "public": false
+    },
+    {
+        "id": "profiles",
+        "name": "profiles",
+        "public": true
+    }
+]

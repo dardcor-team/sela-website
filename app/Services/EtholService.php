@@ -4,6 +4,7 @@ use App\Models\UserEtholSession;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 class EtholService
 {
@@ -278,6 +279,13 @@ class EtholService
      */
     public function getSchedule(int $userId): array
     {
+        return Cache::remember("ethol_schedule_{$userId}", 900, function () use ($userId) {
+            return $this->fetchSchedule($userId);
+        });
+    }
+
+    private function fetchSchedule(int $userId): array
+    {
         $session = $this->getSession($userId);
         $token   = $session->ethol_token;
         $headers = $this->makeEtholHeaders($token);
@@ -354,6 +362,13 @@ class EtholService
      * @throws \Exception
      */
     public function getHomework(int $userId): array
+    {
+        return Cache::remember("ethol_homework_{$userId}", 900, function () use ($userId) {
+            return $this->fetchHomework($userId);
+        });
+    }
+
+    private function fetchHomework(int $userId): array
     {
         $session   = $this->getSession($userId);
         $token     = $session->ethol_token;
@@ -458,6 +473,13 @@ class EtholService
      * @throws \Exception
      */
     public function getAttendance(int $userId): array
+    {
+        return Cache::remember("ethol_attendance_{$userId}", 900, function () use ($userId) {
+            return $this->fetchAttendance($userId);
+        });
+    }
+
+    private function fetchAttendance(int $userId): array
     {
         $session    = $this->getSession($userId);
         $token      = $session->ethol_token;

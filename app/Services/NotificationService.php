@@ -4,18 +4,20 @@ namespace App\Services;
 
 use App\Models\Notification;
 use App\Services\FcmService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class NotificationService
 {
     public function getNotifications($userId, $isRead = null)
     {
         $query = Notification::where('user_id', $userId);
-        
+
         if ($isRead !== null) {
             $isReadBool = filter_var($isRead, FILTER_VALIDATE_BOOLEAN);
             $query->where('is_read', $isReadBool);
         }
-        
+
         return $query->orderBy('created_at', 'desc')->get();
     }
 
@@ -31,6 +33,8 @@ class NotificationService
             'created_at' => now(),
         ]);
 
+        Cache::tags(["user_notifications_{$data['user_id']}"])->flush();
+
         try {
             $fcmService = app(FcmService::class);
             $fcmService->sendToUser(
@@ -44,6 +48,27 @@ class NotificationService
         }
 
         return $notification;
+    }
+
+    public function notifyLecturersByGroup($groupId, $title, $message, $type, $relatedId = null)
+    {
+        $group = \App\Models\Group::find($groupId);
+        if (!$group || !$group->class_name) return;
+
+        $classId = DB::table('classes')->where('name', $group->class_name)->value('id');
+        if (!$classId) return;
+
+        $lecturerIds = DB::table('lecturer_classes')->where('class_id', $classId)->pluck('lecturer_id');
+
+        foreach ($lecturerIds as $lecturerId) {
+            $this->createNotification([
+                'user_id' => $lecturerId,
+                'title' => $title,
+                'message' => $message,
+                'type' => $type,
+                'related_id' => $relatedId,
+            ]);
+        }
     }
 
     public function markAsRead($id)
