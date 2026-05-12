@@ -1,20 +1,21 @@
-version: '3.8'
-
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: sela_app_render_ready
+    image: ghcr.io/dardcor-team/sela-website:latest
+    container_name: sela_app
     restart: unless-stopped
-    environment:
-      # Mocking Render's dynamic port locally
-      - PORT=8000
+    env_file:
+      - .env
     ports:
-      # local:container
-      - "8000:8000" 
-    volumes:
-      - ./:/var/www/html
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - sela_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: sela_redis
+    restart: unless-stopped
     networks:
       - sela_network
 
