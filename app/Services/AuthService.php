@@ -57,6 +57,12 @@ class AuthService
             ]);
         }
 
+        if (is_null($user->email_verified_at)) {
+            throw ValidationException::withMessages([
+                'email' => ['Email belum diverifikasi. Silakan periksa email Anda untuk kode OTP verifikasi.'],
+            ]);
+        }
+
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return [

@@ -8,6 +8,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmailOtpMail;
+
 class AuthController extends Controller
 {
     public function register(Request $request, AuthService $service): JsonResponse
@@ -19,7 +22,61 @@ class AuthController extends Controller
                 function (string $attribute, mixed $value, \Closure $fail) {
                     if (!str_ends_with($value, '@it.student.pens.ac.id') && !str_ends_with($value, '@pens.ac.id')) {
                         $fail('Gunakan email kampus: @it.student.pens.ac.id (Mahasiswa) atau @pens.ac.id (Dosen)');
-                    }
+    public function verify_register_otp(Request $request): JsonResponse
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|string|size:6'
+        ]);
+
+        $cachedOtp = Cache::get("register_otp_{$request->email}");
+
+        if (!$cachedOtp) {
+            return response()->json(['message' => 'Kode OTP telah kadaluarsa atau tidak ditemukan. Silakan minta ulang.'], 400);
+        }
+
+        if ($cachedOtp !== $request->otp) {
+            return response()->json(['message' => 'Kode OTP salah.'], 400);
+        }
+
+        $user = \App\Models\User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json(['message' => 'Pengguna tidak ditemukan.'], 404);
+        }
+
+        $user->email_verified_at = now();
+        $user->save();
+
+        Cache::forget("register_otp_{$request->email}");
+
+        return response()->json(['message' => 'Email berhasil diverifikasi. Silakan login.']);
+    }
+
+    public function resend_register_otp(Request $request): JsonResponse
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        $user = \App\Models\User::where('email', $request->email)->first();
+
+        if ($user->email_verified_at !== null) {
+            return response()->json(['message' => 'Email ini sudah diverifikasi.'], 400);
+        }
+
+        $otp = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        Cache::put("register_otp_{$user->email}", $otp, now()->addMinutes(10));
+        
+        try {
+            Mail::to($user->email)->send(new VerifyEmailOtpMail($user->username, $otp));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send verification email: ' . $e->getMessage());
+            return response()->json(['message' => 'Gagal mengirim email verifikasi.'], 500);
+        }
+
+        return response()->json(['message' => 'Kode OTP baru telah dikirim ke email Anda.']);
+    }
+}
                 },
             ],
             'password' => 'required|string|min:6',
@@ -27,20 +84,22 @@ class AuthController extends Controller
         ]);
 
         $user = $service->register($validated);
-        $token = $user->createToken('auth-token')->plainTextToken;
+        
+        // Generate and send OTP
+        $otp = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        Cache::put("register_otp_{$user->email}", $otp, now()->addMinutes(10));
+        
+        try {
+            Mail::to($user->email)->send(new VerifyEmailOtpMail($user->username, $otp));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send verification email: ' . $e->getMessage());
+        }
 
         Cache::tags(['users'])->flush();
 
         return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'username' => $user->username,
-                'full_name' => $user->username,
-                'class_name' => $request->class_name,
-                'role' => $user->role,
-            ],
-            'token' => $token,
+            'message' => 'Registrasi berhasil. Silakan cek email Anda untuk kode OTP.',
+            'email' => $user->email
         ], 201);
     }
 

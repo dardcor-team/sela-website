@@ -29,6 +29,9 @@ Route::post('forgot-password', [AuthController::class, 'forgot_password']);
 Route::post('verify-otp', [AuthController::class, 'verify_otp']);
 Route::post('reset-password', [AuthController::class, 'reset_password']);
 
+Route::post('verify-register-otp', [AuthController::class, 'verify_register_otp']);
+Route::post('resend-register-otp', [AuthController::class, 'resend_register_otp']);
+
 Route::get('/classes', [ClassController::class, 'index']);
 Route::get('/courses', [CourseController::class, 'index']);
 
