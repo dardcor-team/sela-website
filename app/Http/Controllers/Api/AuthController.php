@@ -14,10 +14,16 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'username' => 'required|string|max:50',
-            'email' => 'required|email|max:100|unique:users,email',
+            'email' => [
+                'required', 'email', 'max:100', 'unique:users,email',
+                function (string $attribute, mixed $value, \Closure $fail) {
+                    if (!str_ends_with($value, '@it.student.pens.ac.id') && !str_ends_with($value, '@pens.ac.id')) {
+                        $fail('Gunakan email kampus: @it.student.pens.ac.id (Mahasiswa) atau @pens.ac.id (Dosen)');
+                    }
+                },
+            ],
             'password' => 'required|string|min:6',
             'class_name' => 'nullable|string|max:100',
-            'role' => 'nullable|string|max:50',
         ]);
 
         $user = $service->register($validated);
@@ -32,6 +38,7 @@ class AuthController extends Controller
                 'username' => $user->username,
                 'full_name' => $user->username,
                 'class_name' => $request->class_name,
+                'role' => $user->role,
             ],
             'token' => $token,
         ], 201);
@@ -91,6 +98,7 @@ class AuthController extends Controller
                 'full_name' => $user->profile?->full_name ?? $user->username,
                 'class_name' => $user->profile?->class_name,
                 'avatar_url' => $user->profile?->avatar_url,
+                'role' => $user->role,
             ];
         });
 

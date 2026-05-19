@@ -10,9 +10,30 @@ use Illuminate\Support\Facades\DB;
 
 class AuthService
 {
+    /**
+     * Determine role based on email domain.
+     *
+     * @return string 'lecturer' for @pens.ac.id, 'student' otherwise.
+     */
+    public static function roleFromEmail(string $email): string
+    {
+        // Must check student subdomain first (it.student.pens.ac.id is also @pens.ac.id)
+        if (str_ends_with($email, '@it.student.pens.ac.id')) {
+            return 'student';
+        }
+
+        if (str_ends_with($email, '@pens.ac.id')) {
+            return 'lecturer';
+        }
+
+        return 'student';
+    }
+
     public function register(array $data): User
     {
         return DB::transaction(function () use ($data) {
+            $data['role'] = self::roleFromEmail($data['email']);
+
             $user = User::create($data);
 
             Profile::create([

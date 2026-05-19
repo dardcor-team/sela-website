@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\EtholController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\GroupMemberController;
@@ -29,14 +28,6 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('forgot-password', [AuthController::class, 'forgot_password']);
 Route::post('verify-otp', [AuthController::class, 'verify_otp']);
 Route::post('reset-password', [AuthController::class, 'reset_password']);
-
-Route::post('ethol/login', [EtholController::class, 'login']);
-
-Route::get(
-    'users/approve-lecturer/{user}',
-    [UserController::class, 'approveLecturerAccess']
-)->name('users.approve-lecturer')
-    ->middleware('signed');
 
 Route::get('/classes', [ClassController::class, 'index']);
 Route::get('/courses', [CourseController::class, 'index']);
@@ -100,7 +91,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/search', [UserController::class, 'search']);
-    Route::post('users/request-lecturer', [UserController::class, 'requestLecturerAccess']);
     Route::get('users/{id}', [UserController::class, 'show']);
     Route::put('users/{id}', [UserController::class, 'update']);
     Route::delete('users/{id}', [UserController::class, 'destroy']);
@@ -206,17 +196,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/upload/avatar', [FileUploadController::class, 'uploadAvatar']);
     Route::post('/upload/task-file', [FileUploadController::class, 'uploadTaskFile']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Ethol Protected
-    |--------------------------------------------------------------------------
-    */
-
-    Route::prefix('ethol')->group(function () {
-        Route::post('logout', [EtholController::class, 'logout']);
-        Route::get('schedule', [EtholController::class, 'schedule']);
-        Route::get('homework', [EtholController::class, 'homework']);
-        Route::get('attendance', [EtholController::class, 'attendance']);
-        Route::get('token', [EtholController::class, 'token']);
-    });
 });
