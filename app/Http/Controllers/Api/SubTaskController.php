@@ -14,26 +14,37 @@ class SubTaskController extends Controller
 {
     public function store(Request $request, $task_id, SubTaskService $service)
     {
-        $request->validate([
-            'title' => 'required|string|max:150',
-            'description' => 'nullable|string',
-            'user_id' => 'nullable|uuid|exists:profiles,id',
-        ]);
+        try {
+            $request->validate([
+                'title' => 'required|string|max:150',
+                'description' => 'nullable|string',
+                'user_id' => 'nullable|uuid|exists:profiles,id',
+            ]);
 
-        $data = $service->createSubtask($task_id, $request);
+            $data = $service->createSubtask($task_id, $request);
 
-        $userId = auth()->id();
-        Cache::tags(["task_{$task_id}"])->flush();
-        Cache::tags(["user_tasks_{$userId}"])->flush();
-        Cache::tags(["dashboard_{$userId}"])->flush();
+            $userId = auth()->id();
+            Cache::tags(["task_{$task_id}"])->flush();
+            Cache::tags(["user_tasks_{$userId}"])->flush();
+            Cache::tags(["dashboard_{$userId}"])->flush();
 
-        Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => app(TaskService::class)->getTasksByUser($userId));
-        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
+            Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => app(TaskService::class)->getTasksByUser($userId));
+            Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
-        return response()->json([
-            "message" => "Subtask created",
-            "data" => $data,
-        ], 201);
+            return response()->json([
+                "message" => "Subtask created",
+                "data" => $data,
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            return response()->json([
+                "message" => "Server error inside store: " . $e->getMessage(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine(),
+                "trace" => $e->getTraceAsString()
+            ], 500);
+        }
     }
 
     public function updateProgress(Request $request, $subtask_id, SubTaskService $service)
