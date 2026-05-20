@@ -31,8 +31,8 @@ class UserController extends Controller
         $cacheKey = 'user_search_' . md5($query);
 
         $users = Cache::tags(['users'])->remember($cacheKey, 300, function () use ($query) {
-            return \App\Models\User::where('username', 'ILIKE', "%{$query}%")
-                ->orWhere('email', 'ILIKE', "%{$query}%")
+            return \App\Models\User::where('username', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
+                ->orWhere('email', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
                 ->get();
         });
 

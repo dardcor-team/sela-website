@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('group_members', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->uuid('group_id')->nullable();
             $table->uuid('user_id')->nullable();
             $table->text('role')->default('member')->nullable();

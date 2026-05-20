@@ -21,19 +21,3 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })->create();
 
-if (isset($_SERVER['VERCEL'])) {
-    $app->useStoragePath('/tmp/storage');
-    $storagePaths = [
-        '/tmp/storage/framework/views',
-        '/tmp/storage/framework/cache',
-        '/tmp/storage/framework/sessions',
-        '/tmp/storage/bootstrap/cache',
-    ];
-    foreach ($storagePaths as $path) {
-        if (!is_dir($path)) {
-            mkdir($path, 0755, true);
-        }
-    }
-}
-
-return $app;

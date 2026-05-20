@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->text('name')->unique();
             $table->text('description')->nullable();
             $table->timestampTz('created_at')->useCurrent()->nullable();

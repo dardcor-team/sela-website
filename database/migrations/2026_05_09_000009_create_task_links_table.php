@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('task_links', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->uuid('task_id')->nullable();
             $table->text('url');
             $table->text('label')->nullable();

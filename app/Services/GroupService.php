@@ -16,7 +16,7 @@ class GroupService
             ->join('groups', 'groups.id', '=', 'group_members.group_id')
             ->where('group_members.user_id', $user_id)
             ->when($search, function ($query) use ($search) {
-                $query->where('groups.name', 'ilike', "%$search%");
+                $query->where('groups.name', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%$search%");
             })
             ->select(
                 'groups.id',

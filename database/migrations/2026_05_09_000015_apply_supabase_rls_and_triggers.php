@@ -7,6 +7,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            return; // Skip Supabase-specific SQL for non-PostgreSQL databases
+        }
+        
         DB::unprepared('
             ALTER TABLE "public"."profiles" ENABLE ROW LEVEL SECURITY;
             ALTER TABLE "public"."groups" ENABLE ROW LEVEL SECURITY;

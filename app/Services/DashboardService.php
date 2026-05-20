@@ -19,7 +19,7 @@ class DashboardService
             ->join('tasks', 'tasks.group_id', '=', 'groups.id')
             ->where('group_members.user_id', $user_id)
             ->when($search, function ($query) use ($search) {
-                $query->where('tasks.title', 'ilike', "%$search%");
+                $query->where('tasks.title', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%$search%");
             })
             ->select(
                 'tasks.id',
@@ -38,7 +38,7 @@ class DashboardService
                 $q->where('is_group', false)->orWhereNull('group_id');
             })
             ->when($search, function ($query) use ($search) {
-                $query->where('tasks.title', 'ilike', "%$search%");
+                $query->where('tasks.title', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%$search%");
             })
             ->select(
                 'tasks.id',

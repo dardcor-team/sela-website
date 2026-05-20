@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->text('name');
             $table->text('course_name')->nullable();
             $table->text('class_name')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
 
-        DB::statement('ALTER TABLE "groups" ADD CONSTRAINT groups_group_number_check CHECK (group_number > 0)');
+        if (DB::connection()->getDriverName() === 'pgsql') { DB::statement('ALTER TABLE "groups" ADD CONSTRAINT groups_group_number_check CHECK (group_number > 0)'); }
     }
 
     public function down(): void
