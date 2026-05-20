@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Course;
 
 class CourseSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class CourseSeeder extends Seeder
         $courses = json_decode($json, true);
 
         foreach ($courses as $course) {
-            DB::table('courses')->insertOrIgnore([
+            Course::firstOrCreate([
                 'name' => $course['name']
             ]);
         }

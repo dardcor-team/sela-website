@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ClassSeeder extends Seeder
 {
@@ -14,6 +15,7 @@ class ClassSeeder extends Seeder
 
         foreach ($classes as $class) {
             DB::table('classes')->insertOrIgnore([
+                'id' => Str::uuid()->toString(),
                 'name' => $class['name']
             ]);
         }
