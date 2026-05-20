@@ -41,6 +41,7 @@ composer install
 php artisan key:generate
 php artisan storage:link
 php artisan migrate --seed
+php artisan optimize:clear
 php artisan serve --host=<YOUR-IP> --port=8000
 ```
 

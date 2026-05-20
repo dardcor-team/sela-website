@@ -11,18 +11,18 @@ class TestUserSeeder extends Seeder
 {
     public function run(): void
     {
-        $email = 'dosen@gmail.com';
-        
+        $email = 'dosen@pens.ac.id';
+
         $userExists = DB::table('users')->where('email', $email)->exists();
-        
+
         if (!$userExists) {
             $userId = Str::uuid()->toString();
-            
+
             DB::table('users')->insert([
                 'id' => $userId,
                 'username' => 'dosen',
                 'email' => $email,
-                'password' => Hash::make('password'),
+                'password' => Hash::make('dosen123'),
                 'role' => 'lecturer',
                 'created_at' => now(),
                 'updated_at' => now(),

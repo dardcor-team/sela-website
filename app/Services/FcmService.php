@@ -100,6 +100,7 @@ class FcmService
                         'ttl' => '0s',
                         'notification' => [
                             'channel_id' => 'sela_high_importance_channel',
+                            'tag' => 'com.sela.app.NOTIFICATION_GROUP',
                         ],
                     ],
                     'apns' => [

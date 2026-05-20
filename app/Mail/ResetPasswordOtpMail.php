@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VerifyEmailOtpMail extends Mailable
+class ResetPasswordOtpMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class VerifyEmailOtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verifikasi Akun SELA Anda',
+            subject: 'Reset Password Akun SELA Anda',
         );
     }
 
@@ -40,7 +40,7 @@ class VerifyEmailOtpMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.verify_email_otp',
+            view: 'emails.reset_password_otp',
         );
     }
 
