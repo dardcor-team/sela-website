@@ -76,13 +76,13 @@ class UserController extends Controller
     {
         $userId = $request->user()->id;
         $validated = $request->validate([
-            'abilities' => 'required|array',
+            'abilities' => 'nullable|array',
             'abilities.*' => 'string|max:100',
         ]);
 
         \App\Models\ProfileAbility::where('user_id', $userId)->delete();
 
-        foreach ($validated['abilities'] as $ability) {
+        foreach ($validated['abilities'] ?? [] as $ability) {
             \App\Models\ProfileAbility::create([
                 'user_id' => $userId,
                 'ability' => $ability,

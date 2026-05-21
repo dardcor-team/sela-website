@@ -107,3 +107,7 @@ jobs:
             MAIL_FROM_NAME=Sela
             FIREBASE_CREDENTIALS=${{ secrets.FIREBASE_CREDENTIALS }}
             BCRYPT_ROUNDS=12
+            FILESYSTEM_DISK=gcs
+            GOOGLE_CLOUD_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+            GOOGLE_CLOUD_STORAGE_BUCKET=${{ secrets.GCP_STORAGE_BUCKET }}
+            GOOGLE_CLOUD_CREDENTIALS=${{ secrets.GCP_SA_KEYS }}
