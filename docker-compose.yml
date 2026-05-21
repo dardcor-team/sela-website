@@ -7,18 +7,3 @@ services:
       - .env
     ports:
       - "127.0.0.1:8000:8000"
-    depends_on:
-      - redis
-    networks:
-      - sela_network
-
-  redis:
-    image: redis:7-alpine
-    container_name: sela_redis
-    restart: unless-stopped
-    networks:
-      - sela_network
-
-networks:
-  sela_network:
-    driver: bridge

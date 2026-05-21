@@ -34,8 +34,6 @@ RUN apt-get update && apt-get install -y \
         zip \
         intl \
         opcache \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -88,4 +86,4 @@ RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "if [ -n \"$PORT\" ]; then sed -i \"s/8000/$PORT/g\" /etc/nginx/sites-available/default; fi && php-fpm -D && nginx -g 'daemon off;'"]
