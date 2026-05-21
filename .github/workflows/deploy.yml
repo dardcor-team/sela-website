@@ -99,3 +99,11 @@ jobs:
             APP_KEY=${{ secrets.APP_KEY }}
             APP_URL=${{ secrets.APP_URL }}
             ETHOL_BASE_URL=https://ethol.pens.ac.id
+            MAIL_MAILER=smtp
+            MAIL_HOST=smtp.gmail.com
+            MAIL_PORT=587
+            MAIL_ENCRYPTION=tls
+            MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+            MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
+            MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}
+            MAIL_FROM_NAME=Sela
