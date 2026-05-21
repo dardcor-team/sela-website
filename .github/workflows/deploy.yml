@@ -89,12 +89,13 @@ jobs:
           image: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO }}/sela-backend:${{ github.sha }}
           env_vars: |
             APP_ENV=production
+            APP_DEBUG=false
+            LOG_CHANNEL=stderr
             DB_CONNECTION=pgsql
-            DB_HOST=${{ secrets.DB_HOST }}
-            DB_PORT=5432
-            DB_DATABASE=${{ secrets.DB_DATABASE }}
-            DB_USERNAME=${{ secrets.DB_USERNAME }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            DB_SSLMODE=require
+            DB_URL=${{ secrets.DB_URL }}
+            CACHE_STORE=file
+            QUEUE_CONNECTION=sync
+            SESSION_DRIVER=cookie
             APP_KEY=${{ secrets.APP_KEY }}
             APP_URL=${{ secrets.APP_URL }}
+            ETHOL_BASE_URL=https://ethol.pens.ac.id
