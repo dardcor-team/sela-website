@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\DashboardService;
-use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -19,11 +18,7 @@ class DashboardController extends Controller
     {
         $search = $request->search;
 
-        $cacheKey = "dashboard_{$user_id}" . ($search ? '_' . md5($search) : '');
-
-        $data = Cache::tags(["dashboard_{$user_id}"])->remember($cacheKey, 300, function () use ($user_id, $search) {
-            return $this->dashboardService->getDashboard($user_id, $search);
-        });
+        $data = $this->dashboardService->getDashboard($user_id, $search);
 
         return response()->json($data);
     }

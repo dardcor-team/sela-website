@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/dardcor-team/sela-website:latest
+    build: .
     container_name: sela_app
     restart: unless-stopped
     env_file:

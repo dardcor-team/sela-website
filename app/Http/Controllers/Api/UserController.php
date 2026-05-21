@@ -6,16 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function index(UserService $service): JsonResponse
     {
-        $users = Cache::tags(['users'])->remember('all_users', 600, function () use ($service) {
-            return $service->getAll();
-        });
+        $users = $service->getAll();
 
         return response()->json($users);
     }
@@ -28,22 +25,16 @@ class UserController extends Controller
             return response()->json([]);
         }
 
-        $cacheKey = 'user_search_' . md5($query);
-
-        $users = Cache::tags(['users'])->remember($cacheKey, 300, function () use ($query) {
-            return \App\Models\User::where('username', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
-                ->orWhere('email', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
-                ->get();
-        });
+        $users = \App\Models\User::where('username', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
+            ->orWhere('email', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
+            ->get();
 
         return response()->json($users);
     }
 
     public function show(UserService $service, string $id): JsonResponse
     {
-        $user = Cache::tags(["user_{$id}"])->remember("user_detail_{$id}", 600, function () use ($service, $id) {
-            return $service->getById($id);
-        });
+        $user = $service->getById($id);
 
         return response()->json($user);
     }
@@ -61,12 +52,6 @@ class UserController extends Controller
 
         $result = $service->update($profile, $validated);
 
-        Cache::tags(["user_{$id}"])->flush();
-        Cache::tags(['users'])->flush();
-
-        Cache::tags(["user_{$id}"])->remember("user_detail_{$id}", 600, fn() => $service->getById($id));
-        Cache::tags(['users'])->remember('all_users', 600, fn() => $service->getAll());
-
         return response()->json($result);
     }
 
@@ -75,12 +60,6 @@ class UserController extends Controller
         $profile = $service->getById($id);
         $service->delete($profile);
 
-        Cache::tags(["user_{$id}"])->flush();
-        Cache::tags(['users'])->flush();
-        Cache::tags(["user_abilities_{$id}"])->flush();
-
-        Cache::tags(['users'])->remember('all_users', 600, fn() => $service->getAll());
-
         return response()->json(null, 204);
     }
 
@@ -88,9 +67,7 @@ class UserController extends Controller
     {
         $userId = $request->user()->id;
 
-        $abilities = Cache::tags(["user_abilities_{$userId}"])->remember("profile_abilities_{$userId}", 600, function () use ($userId) {
-            return \App\Models\ProfileAbility::where('user_id', $userId)->get();
-        });
+        $abilities = \App\Models\ProfileAbility::where('user_id', $userId)->get();
 
         return response()->json(['abilities' => $abilities]);
     }
@@ -112,19 +89,12 @@ class UserController extends Controller
             ]);
         }
 
-        Cache::tags(["user_abilities_{$userId}"])->flush();
-        Cache::tags(["user_abilities_{$userId}"])->remember("profile_abilities_{$userId}", 600, function () use ($userId) {
-            return \App\Models\ProfileAbility::where('user_id', $userId)->get();
-        });
-
         return response()->json(['message' => 'Abilities updated successfully']);
     }
 
     public function abilities(UserService $service, string $userId): JsonResponse
     {
-        $abilities = Cache::tags(["user_abilities_{$userId}"])->remember("abilities_{$userId}", 600, function () use ($service, $userId) {
-            return $service->getAbilities($userId);
-        });
+        $abilities = $service->getAbilities($userId);
 
         return response()->json($abilities);
     }
@@ -137,19 +107,12 @@ class UserController extends Controller
 
         $result = $service->createAbility($userId, $validated['ability']);
 
-        Cache::tags(["user_abilities_{$userId}"])->flush();
-        Cache::tags(["user_abilities_{$userId}"])->remember("abilities_{$userId}", 600, fn() => $service->getAbilities($userId));
-
         return response()->json($result, 201);
     }
 
     public function destroyAbility(UserService $service, string $id): JsonResponse
     {
         $service->deleteAbility($id);
-
-        $userId = auth()->id();
-        Cache::tags(["user_abilities_{$userId}"])->flush();
-        Cache::tags(["user_abilities_{$userId}"])->remember("abilities_{$userId}", 600, fn() => $service->getAbilities($userId));
 
         return response()->json(null, 204);
     }

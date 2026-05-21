@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Notification;
 use App\Services\FcmService;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class NotificationService
@@ -32,8 +31,6 @@ class NotificationService
             'is_read' => false,
             'created_at' => now(),
         ]);
-
-        Cache::tags(["user_notifications_{$data['user_id']}"])->flush();
 
         try {
             $fcmService = app(FcmService::class);

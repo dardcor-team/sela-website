@@ -8,15 +8,12 @@ use App\Models\TaskLink;
 use App\Services\DashboardService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class TaskController extends Controller
 {
     public function getByUser($user_id, TaskService $service)
     {
-        $tasks = Cache::tags(["user_tasks_{$user_id}"])->remember("tasks_user_{$user_id}", 600, function () use ($user_id, $service) {
-            return $service->getTasksByUser($user_id);
-        });
+        $tasks = $service->getTasksByUser($user_id);
 
         return response()->json([
             "tasks" => $tasks,
@@ -25,9 +22,7 @@ class TaskController extends Controller
 
     public function detail($task_id, $user_id, TaskService $service)
     {
-        $data = Cache::tags(["task_{$task_id}", "user_tasks_{$user_id}"])->remember("task_detail_{$task_id}_{$user_id}", 600, function () use ($task_id, $user_id, $service) {
-            return $service->getTaskDetail($task_id, $user_id);
-        });
+        $data = $service->getTaskDetail($task_id, $user_id);
 
         return response()->json($data);
     }
@@ -52,11 +47,6 @@ class TaskController extends Controller
         $task = $service->createTask($request);
 
         $userId = auth()->id();
-        Cache::tags(["user_tasks_{$userId}"])->flush();
-        Cache::tags(["dashboard_{$userId}"])->flush();
-
-        Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => $service->getTasksByUser($userId));
-        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json([
             "message" => "Task created successfully",
@@ -82,13 +72,6 @@ class TaskController extends Controller
         $task = $service->updateTask($id, $request->all());
 
         $userId = auth()->id();
-        Cache::tags(["task_{$id}"])->flush();
-        Cache::tags(["user_tasks_{$userId}"])->flush();
-        Cache::tags(["dashboard_{$userId}"])->flush();
-
-        Cache::tags(["task_{$id}", "user_tasks_{$userId}"])->remember("task_detail_{$id}_{$userId}", 600, fn() => $service->getTaskDetail($id, $userId));
-        Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => $service->getTasksByUser($userId));
-        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json([
             "message" => "Task updated successfully",
@@ -101,21 +84,13 @@ class TaskController extends Controller
         $service->deleteTask($id);
 
         $userId = auth()->id();
-        Cache::tags(["task_{$id}"])->flush();
-        Cache::tags(["user_tasks_{$userId}"])->flush();
-        Cache::tags(["dashboard_{$userId}"])->flush();
-
-        Cache::tags(["user_tasks_{$userId}"])->remember("tasks_user_{$userId}", 600, fn() => $service->getTasksByUser($userId));
-        Cache::tags(["dashboard_{$userId}"])->remember("dashboard_{$userId}", 300, fn() => app(DashboardService::class)->getDashboard($userId));
 
         return response()->json(null, 204);
     }
 
     public function links($taskId)
     {
-        $links = Cache::tags(["task_{$taskId}"])->remember("task_links_{$taskId}", 600, function () use ($taskId) {
-            return TaskLink::where('task_id', $taskId)->get();
-        });
+        $links = TaskLink::where('task_id', $taskId)->get();
 
         return response()->json($links);
     }
@@ -133,18 +108,12 @@ class TaskController extends Controller
             'label' => $request->label,
         ]);
 
-        Cache::tags(["task_{$taskId}"])->flush();
-        Cache::tags(["task_{$taskId}"])->remember("task_links_{$taskId}", 600, fn() => TaskLink::where('task_id', $taskId)->get());
-
         return response()->json($link, 201);
     }
 
     public function destroyAllLinks($taskId)
     {
         TaskLink::where('task_id', $taskId)->delete();
-
-        Cache::tags(["task_{$taskId}"])->flush();
-        Cache::tags(["task_{$taskId}"])->remember("task_links_{$taskId}", 600, fn() => TaskLink::where('task_id', $taskId)->get());
 
         return response()->json(null, 204);
     }
@@ -155,17 +124,12 @@ class TaskController extends Controller
         $taskId = $link->task_id;
         $link->delete();
 
-        Cache::tags(["task_{$taskId}"])->flush();
-        Cache::tags(["task_{$taskId}"])->remember("task_links_{$taskId}", 600, fn() => TaskLink::where('task_id', $taskId)->get());
-
         return response()->json(null, 204);
     }
 
     public function files($taskId)
     {
-        $files = Cache::tags(["task_{$taskId}"])->remember("task_files_{$taskId}", 600, function () use ($taskId) {
-            return TaskFile::where('task_id', $taskId)->get();
-        });
+        $files = TaskFile::where('task_id', $taskId)->get();
 
         return response()->json($files);
     }
@@ -204,18 +168,12 @@ class TaskController extends Controller
             }
         }
 
-        Cache::tags(["task_{$taskId}"])->flush();
-        Cache::tags(["task_{$taskId}"])->remember("task_files_{$taskId}", 600, fn() => TaskFile::where('task_id', $taskId)->get());
-
         return response()->json($file, 201);
     }
 
     public function destroyAllFiles($taskId)
     {
         TaskFile::where('task_id', $taskId)->delete();
-
-        Cache::tags(["task_{$taskId}"])->flush();
-        Cache::tags(["task_{$taskId}"])->remember("task_files_{$taskId}", 600, fn() => TaskFile::where('task_id', $taskId)->get());
 
         return response()->json(null, 204);
     }
@@ -225,9 +183,6 @@ class TaskController extends Controller
         $file = TaskFile::findOrFail($id);
         $taskId = $file->task_id;
         $file->delete();
-
-        Cache::tags(["task_{$taskId}"])->flush();
-        Cache::tags(["task_{$taskId}"])->remember("task_files_{$taskId}", 600, fn() => TaskFile::where('task_id', $taskId)->get());
 
         return response()->json(null, 204);
     }
