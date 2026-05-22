@@ -123,7 +123,10 @@ class FcmService
                 ]);
 
                 // Stale / invalid token — remove it so we don't retry
-                if ($response->status() === 404 || $response->status() === 400) {
+                $body = $response->json();
+                $errorCode = $body['error']['details'][0]['errorCode'] ?? null;
+                
+                if ($response->status() === 404 || $response->status() === 400 || $errorCode === 'UNREGISTERED') {
                     DeviceToken::where('token', $token)->delete();
                 }
             }

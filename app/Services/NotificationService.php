@@ -52,10 +52,7 @@ class NotificationService
         $group = \App\Models\Group::find($groupId);
         if (!$group || !$group->class_name) return;
 
-        $classId = DB::table('classes')->where('name', $group->class_name)->value('id');
-        if (!$classId) return;
-
-        $lecturerIds = DB::table('lecturer_classes')->where('class_id', $classId)->pluck('lecturer_id');
+        $lecturerIds = DB::table('lecturer_classes')->where('class_name', $group->class_name)->pluck('lecturer_id');
 
         foreach ($lecturerIds as $lecturerId) {
             $this->createNotification([

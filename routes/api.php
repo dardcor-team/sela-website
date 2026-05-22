@@ -198,5 +198,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/upload/avatar', [FileUploadController::class, 'uploadAvatar']);
     Route::post('/upload/task-file', [FileUploadController::class, 'uploadTaskFile']);
+    Route::delete('/upload/task-file', [FileUploadController::class, 'deleteTaskFile']);
 
 });

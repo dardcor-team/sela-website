@@ -110,4 +110,4 @@ jobs:
             FILESYSTEM_DISK=gcs
             GOOGLE_CLOUD_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
             GOOGLE_CLOUD_STORAGE_BUCKET=${{ secrets.GCP_STORAGE_BUCKET }}
-            GOOGLE_CLOUD_CREDENTIALS=${{ secrets.GCP_SA_KEYS }}
+            GOOGLE_CLOUD_CREDENTIALS='${{ secrets.GCP_SA_KEYS }}'
