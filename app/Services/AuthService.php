@@ -63,7 +63,11 @@ class AuthService
             ]);
         }
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $expiration = ($credentials['remember_me'] ?? false) 
+            ? now()->addHours(24) 
+            : now()->addHour();
+
+        $token = $user->createToken('auth-token', ['*'], $expiration)->plainTextToken;
 
         return [
             'user' => $user,

@@ -115,6 +115,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
+            'remember_me' => 'nullable|boolean',
         ]);
 
         $result = $service->login($validated);
