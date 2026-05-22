@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function index(UserService $service): JsonResponse
+    public function index(Request $request, UserService $service): JsonResponse
     {
-        $users = $service->getAll();
+        $perPage = $request->query('per_page');
+        $users = $service->getAll($perPage);
 
         return response()->json($users);
     }
@@ -20,14 +21,21 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('q');
+        $perPage = $request->query('per_page');
 
         if (!$query) {
-            return response()->json([]);
+            // Provide a compatible empty structure if paginated
+            return response()->json($perPage ? ['data' => []] : []);
         }
 
-        $users = \App\Models\User::where('username', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
-            ->orWhere('email', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
-            ->get();
+        $usersQuery = \App\Models\User::where('username', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%")
+            ->orWhere('email', DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like', "%{$query}%");
+
+        if ($perPage) {
+            $users = $usersQuery->paginate((int) $perPage);
+        } else {
+            $users = $usersQuery->get();
+        }
 
         return response()->json($users);
     }

@@ -13,8 +13,13 @@ class NotificationController extends Controller
     {
         $userId = $request->query('user_id') ?? $request->user()->id;
         $isRead = $request->query('is_read');
+        $perPage = $request->query('per_page');
 
-        $notifications = $service->getNotifications($userId, $isRead);
+        $notifications = $service->getNotifications($userId, $isRead, $perPage);
+
+        if ($perPage) {
+            return response()->json($notifications);
+        }
 
         return response()->json([
             'notifications' => $notifications

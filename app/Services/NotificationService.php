@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class NotificationService
 {
-    public function getNotifications($userId, $isRead = null)
+    public function getNotifications($userId, $isRead = null, $perPage = null)
     {
         $query = Notification::where('user_id', $userId);
 
@@ -17,7 +17,13 @@ class NotificationService
             $query->where('is_read', $isReadBool);
         }
 
-        return $query->orderBy('created_at', 'desc')->get();
+        $query->orderBy('created_at', 'desc');
+
+        if ($perPage) {
+            return $query->paginate((int) $perPage);
+        }
+
+        return $query->get();
     }
 
     public function createNotification(array $data)

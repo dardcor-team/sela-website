@@ -1,14 +1,10 @@
-<section class="hero pt-[80px] pb-[140px] max-[768px]:pt-[40px] max-[768px]:pb-[80px] relative 
+<section class="hero pt-[140px] pb-[140px] max-[768px]:pt-[120px] max-[768px]:pb-[80px] relative 
                 bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
                 bg-[size:50px_50px] overflow-hidden animate-[grid-move_20s_linear_infinite]">
     <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-5">
         <div class="grid grid-cols-2 gap-[60px] max-[768px]:gap-[40px] items-center max-[992px]:grid-cols-1 max-[992px]:text-center">
             
             <div class="hero-content">
-                <div class="hero-badge reveal inline-flex items-center gap-2 bg-black text-white text-[0.8rem] max-[480px]:text-[0.7rem] font-bold uppercase tracking-[1px] py-2 px-[18px] max-[480px]:px-[14px] rounded-full mb-7 max-[480px]:mb-5">
-                    <span class="w-2 h-2 bg-[#22c55e] rounded-full animate-[blink_1.4s_infinite]"></span> 
-                    Platform Kolaborasi #1 Mahasiswa
-                </div>
                 
                 <h1 class="reveal d1 text-[3.2rem] max-[768px]:text-[2.4rem] max-[480px]:text-[1.7rem] text-black mb-6 leading-[1.1] font-mono font-normal uppercase">
                     Kerja Kelompok <em class="text-cyan not-italic">Adil</em>,<br>Tanpa Drama Free-Rider.

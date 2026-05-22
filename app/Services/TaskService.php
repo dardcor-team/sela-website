@@ -10,9 +10,9 @@ use App\Services\NotificationService;
 
 class TaskService
 {
-    public function getTasksByUser($user_id)
+    public function getTasksByUser($user_id, $perPage = null)
     {
-        $tasks = DB::table('group_members')
+        $groupTasks = DB::table('group_members')
             ->join('groups', 'groups.id', '=', 'group_members.group_id')
             ->join('tasks', 'tasks.group_id', '=', 'groups.id')
             ->where('group_members.user_id', $user_id)
@@ -33,7 +33,7 @@ class TaskService
             )
             ->get();
 
-        foreach ($tasks as $task) {
+        foreach ($groupTasks as $task) {
             $total = DB::table('subtasks')
                 ->where('task_id', $task->id)
                 ->count();
@@ -79,7 +79,21 @@ class TaskService
             $task->progress = 0;
         }
 
-        return $tasks->merge($personalTasks)->unique('id')->values();
+        $tasks = $groupTasks->merge($personalTasks)->unique('id')->values();
+
+        if ($perPage) {
+            $page = request()->get('page', 1);
+            $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                $tasks->forPage($page, (int) $perPage),
+                $tasks->count(),
+                (int) $perPage,
+                $page,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+            return $paginator;
+        }
+
+        return $tasks;
     }
 
     public function getTaskDetail($task_id, $user_id)

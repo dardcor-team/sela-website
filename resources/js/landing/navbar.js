@@ -6,6 +6,37 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Scroll active state for navbar
+const navLinks = document.querySelectorAll('.nav-links a.nav-link');
+const sections = document.querySelectorAll('section[id], div[id]'); 
+
+window.addEventListener('scroll', () => {
+    // 1. Handle background navbar
+    if (navWrap) {
+        navWrap.classList.toggle('scrolled', window.scrollY > 20);
+    }
+
+    // 2. Handle Highlight Aktif
+    let current = '';
+    const scrollPosition = window.scrollY + 100;
+
+    sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach((link) => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+});
+
 const hamburgerBtn = document.getElementById('hamburger-btn');
 const mobileMenu = document.getElementById('mobile-menu');
 

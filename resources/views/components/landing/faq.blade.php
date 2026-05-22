@@ -17,7 +17,7 @@
     ],
     [
         'question' => 'Apakah aplikasi SELA hanya tersedia di ponsel pintar?',
-        'answer' => 'SELA tersedia di platform mobile (Android & iOS) maupun web browser. Kamu bisa mengakses seluruh fitur SELA dari smartphone, tablet, laptop, maupun desktop sesuai preferensimu.',
+        'answer' => 'Saat ini, SELA hanya tersedia dan dapat diunduh untuk perangkat Android.',
     ]
 ]])
 

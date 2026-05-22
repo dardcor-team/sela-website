@@ -9,14 +9,14 @@
     --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-mono: 'Rubik Mono One', ui-monospace, monospace;
 
-    --color-cyan: #09637E;
-    --color-cyan-light: #0a7a9e;
-    --color-cyan-bright: #06A3CC;
+    --color-cyan: #0089A5;
+    --color-cyan-light: #00A3C4;
+    --color-cyan-bright: #006CA5;
     --color-muted: #666666;
 
     --shadow-neo: 6px 6px 0px #000000;
     --shadow-neo-hover: 12px 12px 0px #000000;
-    --shadow-neo-cyan: 6px 6px 0px #09637E;
+    --shadow-neo-cyan: 6px 6px 0px #0089A5;
 }
 
 @layer base {
@@ -36,12 +36,12 @@
         background: #fff;
         line-height: 1.5;
         overflow-x: hidden;
-        padding-top: 84px;
+        padding-top: 100px;
     }
 
     @media (max-width: 768px) {
         body {
-            padding-top: 72px;
+            padding-top: 85px;
         }
     }
 
@@ -62,6 +62,10 @@
     .navbar-wrap.scrolled {
         background: rgba(255, 255, 255, 0.96);
         box-shadow: 8px 8px 0px #000;
+    }
+
+    .nav-links a.active {
+        color: var(--color-cyan);
     }
 
     @media (max-width: 768px) {

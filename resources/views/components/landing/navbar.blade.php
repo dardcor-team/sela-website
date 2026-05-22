@@ -5,16 +5,18 @@
             max-[768px]:w-[calc(100%_-_32px)] max-[768px]:top-[10px] max-[768px]:rounded-[24px]">
     <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-4">
         <nav class="flex items-center justify-between py-[14px] px-[28px] max-[768px]:py-[10px] max-[768px]:px-[12px]">
-            <a href="#" class="logo font-mono text-[1.8rem] max-[480px]:text-[1.4rem] tracking-[-2px] 
-                              bg-[linear-gradient(135deg,var(--color-cyan)_0%,var(--color-cyan-bright)_50%,var(--color-cyan)_100%)] 
-                              bg-clip-text text-transparent bg-[length:200%_auto] 
-                              animate-[shimmer_3s_linear_infinite]">SELA</a>
+            <a href="#" class="logo flex items-center gap-2 font-mono text-[1.8rem] max-[480px]:text-[1.4rem] tracking-[-2px] 
+                               bg-[linear-gradient(135deg,var(--color-cyan)_0%,var(--color-cyan-bright)_50%,var(--color-cyan)_100%)] 
+                               bg-clip-text text-transparent bg-[length:200%_auto] 
+                               animate-[shimmer_3s_linear_infinite]">
+                <img src="{{ asset('images/sela.png') }}" alt="Logo SELA" class="w-8 h-8 -mt-1"> SELA
+            </a>
             <div class="nav-links flex gap-8 font-bold text-[0.88rem] uppercase max-[992px]:hidden">
-                <a href="#features" class="transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Feature</a>
-                <a href="#how" class="transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">How it Works</a>
-                <a href="#reviews" class="transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Reviews</a>
-                <a href="#faq" class="transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">FAQ</a>
-                <a href="#team" class="transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Bantuan</a>
+                <a href="#features" class="nav-link transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Fitur</a>
+                <a href="#how" class="nav-link transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Cara kerja</a>
+                <a href="#faq" class="nav-link transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Pertanyaan</a>
+                <a href="#reviews" class="nav-link transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Testimoni</a>
+                <a href="#team" class="nav-link transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] hover:text-cyan">Bantuan</a>
             </div>
             <div class="nav-actions flex gap-3 items-center">
                 <a href="https://play.google.com/store/apps/details?id=com.pdbl.sela" class="btn inline-flex items-center justify-center gap-2 
@@ -44,10 +46,10 @@
                 shadow-[8px_8px_0px_var(--color-cyan)] p-6
                 transition-all duration-300">
         <div class="flex flex-col gap-4">
-            <a href="#features" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">Feature</a>
-            <a href="#how" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">How it Works</a>
-            <a href="#reviews" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">Reviews</a>
-            <a href="#faq" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">FAQ</a>
+            <a href="#features" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">Fitur</a>
+            <a href="#how" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">Cara kerja</a>
+            <a href="#faq" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">Pertanyaan</a>
+            <a href="#reviews" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">Testimoni</a>
             <a href="#team" class="mobile-nav-link text-[1rem] font-bold uppercase py-3 px-4 rounded-[14px] border-[2px] border-transparent hover:border-black hover:bg-gray-50 transition-all">Bantuan</a>
             <a href="https://play.google.com/store/apps/details?id=com.pdbl.sela" class="btn inline-flex items-center justify-center gap-2 
                                py-[14px] px-[28px] font-mono text-[0.85rem] cursor-pointer 

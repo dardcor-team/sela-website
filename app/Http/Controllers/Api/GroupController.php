@@ -11,13 +11,12 @@ class GroupController extends Controller
 {
     public function getByUser(Request $request, $user_id, GroupService $service)
     {
-        $search = $request->search;
+        $search = $request->query('search');
+        $perPage = $request->query('per_page');
 
-        $groups = $service->getGroupsByUser($user_id, $search);
+        $groups = $service->getGroupsByUser($user_id, $search, $perPage);
 
-        return response()->json([
-            "groups" => $groups,
-        ]);
+        return response()->json($perPage ? $groups : ["groups" => $groups]);
     }
 
     public function detail($group_id, GroupService $service)

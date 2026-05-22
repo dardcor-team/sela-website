@@ -11,13 +11,12 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function getByUser($user_id, TaskService $service)
+    public function getByUser(Request $request, $user_id, TaskService $service)
     {
-        $tasks = $service->getTasksByUser($user_id);
+        $perPage = $request->query('per_page');
+        $tasks = $service->getTasksByUser($user_id, $perPage);
 
-        return response()->json([
-            "tasks" => $tasks,
-        ]);
+        return response()->json($perPage ? $tasks : ["tasks" => $tasks]);
     }
 
     public function detail($task_id, $user_id, TaskService $service)

@@ -7,8 +7,11 @@ use App\Models\ProfileAbility;
 
 class UserService
 {
-    public function getAll()
+    public function getAll($perPage = null)
     {
+        if ($perPage) {
+            return Profile::paginate((int) $perPage);
+        }
         return Profile::all();
     }
 

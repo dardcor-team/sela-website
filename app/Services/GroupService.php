@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 
 class GroupService
 {
-    public function getGroupsByUser($user_id, $search = null)
+    public function getGroupsByUser($user_id, $search = null, $perPage = null)
     {
-        $groups = DB::table('group_members')
+        $query = DB::table('group_members')
             ->join('groups', 'groups.id', '=', 'group_members.group_id')
             ->where('group_members.user_id', $user_id)
             ->when($search, function ($query) use ($search) {
@@ -28,10 +28,17 @@ class GroupService
                 'groups.invitation_code',
                 'groups.lecture_code',
                 'group_members.role'
-            )
-            ->get();
+            );
 
-        foreach ($groups as $group) {
+        if ($perPage) {
+            $groups = $query->paginate((int) $perPage);
+            $items = $groups->items();
+        } else {
+            $groups = $query->get();
+            $items = $groups;
+        }
+
+        foreach ($items as $group) {
             $group->total_member = DB::table('group_members')
                 ->where('group_id', $group->id)
                 ->count();
