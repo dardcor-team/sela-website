@@ -81,6 +81,8 @@ class GroupService
                 'profiles.id',
                 'profiles.username',
                 'profiles.full_name',
+                'profiles.avatar_url',
+                'profiles.class_name',
                 'group_members.role'
             )
             ->get();
