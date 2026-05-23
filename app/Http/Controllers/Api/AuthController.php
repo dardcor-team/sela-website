@@ -29,6 +29,14 @@ class AuthController extends Controller
             ],
             'password' => 'required|string|min:6',
             'class_name' => 'nullable|string|max:100',
+        ], [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah terdaftar.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal 6 karakter.',
         ]);
 
         $user = $service->register($validated);
