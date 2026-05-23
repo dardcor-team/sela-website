@@ -106,6 +106,7 @@ jobs:
             MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}
             MAIL_FROM_NAME=Sela
             FIREBASE_CREDENTIALS=${{ secrets.FIREBASE_CREDENTIALS }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
             BCRYPT_ROUNDS=12
             FILESYSTEM_DISK=gcs
             GOOGLE_CLOUD_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
