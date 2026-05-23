@@ -51,9 +51,13 @@ class AuthService
     {
         $user = User::with('profile')->where('email', $credentials['email'])->first();
 
-        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+        if (!$user) {
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Akun belum terdaftar.');
+        }
+
+        if (! Hash::check($credentials['password'], $user->password)) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => ['Password salah.'],
             ]);
         }
 
