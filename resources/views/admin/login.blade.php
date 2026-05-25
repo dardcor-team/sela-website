@@ -97,7 +97,7 @@
                 </div>
                 @endif
 
-                <form action="{{ route('admin.login.submit') }}" method="POST">
+                <form action="{{ route('admin.login') }}" method="POST">
                     @csrf
                     <div style="margin-bottom:18px;">
                         <label for="email">Email</label>
