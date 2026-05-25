@@ -15,7 +15,6 @@ Laravel 12 backend for the Sela project management platform. The current repo is
 - **Frontend assets:** Vite (compiled during Docker build)
 - **Web Server:** Nginx (reverse proxy on port 8000)
 - **Deployment:** Docker on Render (recommended) or AWS EC2
-- **ETHOL Integration:** PENS academic portal login flow
 
 ## Project Structure
 
@@ -248,7 +247,6 @@ Public routes:
 
 - `POST /api/register`
 - `POST /api/login`
-- `POST /api/ethol/login`
 
 All other API routes are protected by `auth:sanctum`.
 
@@ -366,17 +364,6 @@ This section reflects the current `routes/api.php` file.
 | `POST` | `/api/tasks/{taskId}/generations` |
 | `GET` | `/api/task-generations/{id}` |
 | `DELETE` | `/api/task-generations/{id}` |
-
-### ETHOL
-
-| Method | Endpoint |
-|---|---|
-| `POST` | `/api/ethol/login` |
-| `POST` | `/api/ethol/logout` |
-| `GET` | `/api/ethol/schedule` |
-| `GET` | `/api/ethol/homework` |
-| `GET` | `/api/ethol/attendance` |
-| `GET` | `/api/ethol/token` |
 
 ## Database Schema
 

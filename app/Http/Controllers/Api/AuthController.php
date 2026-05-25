@@ -7,6 +7,7 @@ use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\RateLimiter;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmailOtpMail;
@@ -17,6 +18,36 @@ class AuthController extends Controller
 {
     public function register(Request $request, AuthService $service): JsonResponse
     {
+        $rateLimitKey = 'register-attempts:' . $request->ip();
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 5)) {
+            return response()->json([
+                'message' => "Wait for 5 minutes, you're try too many."
+            ], 429);
+        }
+
+        RateLimiter::hit($rateLimitKey, 300); // 5 minutes = 300 seconds
+
+        // Clean up unverified users with the same email or username
+        if ($request->has('email')) {
+            $existingUserByEmail = \App\Models\User::where('email', $request->email)->first();
+            if ($existingUserByEmail && is_null($existingUserByEmail->email_verified_at)) {
+                Cache::forget("register_otp_{$existingUserByEmail->email}");
+                Cache::forget("otp_limit_{$existingUserByEmail->email}");
+                $existingUserByEmail->delete();
+            }
+        }
+        if ($request->has('username')) {
+            $existingProfileByUsername = \App\Models\Profile::where('username', $request->username)->first();
+            if ($existingProfileByUsername) {
+                $existingUserByUsername = \App\Models\User::find($existingProfileByUsername->id);
+                if ($existingUserByUsername && is_null($existingUserByUsername->email_verified_at)) {
+                    Cache::forget("register_otp_{$existingUserByUsername->email}");
+                    Cache::forget("otp_limit_{$existingUserByUsername->email}");
+                    $existingUserByUsername->delete();
+                }
+            }
+        }
+
         $validated = $request->validate([
             'username' => 'required|string|max:50|unique:profiles,username',
             'email' => [
@@ -234,8 +265,8 @@ class AuthController extends Controller
 
         $user = \App\Models\User::where('email', $request->email)->first();
 
-        if (!$user) {
-            return response()->json(['message' => 'Alamat email tidak terdaftar.'], 404);
+        if (!$user || is_null($user->email_verified_at)) {
+            return response()->json(['message' => 'Akun belum terdaftar.'], 404);
         }
 
         if (Cache::has("otp_limit_{$user->email}")) {
@@ -292,7 +323,7 @@ class AuthController extends Controller
 
         $user = \App\Models\User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (!$user || is_null($user->email_verified_at)) {
             return response()->json(['message' => 'Pengguna tidak ditemukan.'], 404);
         }
 

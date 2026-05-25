@@ -59,4 +59,17 @@ class PasswordResetTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['otp', 'password']);
     }
+
+    public function test_forgot_password_with_unverified_email_returns_404(): void
+    {
+        Mail::fake();
+        $user = \App\Models\User::factory()->unverified()->create(['email' => 'unverified@it.student.pens.ac.id']);
+        
+        $response = $this->postJson('/api/forgot-password', [
+            'email' => 'unverified@it.student.pens.ac.id',
+        ]);
+        
+        $response->assertStatus(404)
+            ->assertJson(['message' => 'Akun belum terdaftar.']);
+    }
 }

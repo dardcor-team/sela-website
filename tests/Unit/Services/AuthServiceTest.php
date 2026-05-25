@@ -52,11 +52,12 @@ class AuthServiceTest extends TestCase
         $this->service->login(['email' => $user->email, 'password' => 'wrong']);
     }
 
-    public function test_login_with_unverified_email_throws_validation_exception(): void
+    public function test_login_with_unverified_email_throws_not_found_exception(): void
     {
         $user = User::factory()->unverified()->create();
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
+        $this->expectExceptionMessage('Akun belum terdaftar.');
         $this->service->login(['email' => $user->email, 'password' => 'password']);
     }
 }

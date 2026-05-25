@@ -51,19 +51,13 @@ class AuthService
     {
         $user = User::with('profile')->where('email', $credentials['email'])->first();
 
-        if (!$user) {
+        if (!$user || is_null($user->email_verified_at)) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Akun belum terdaftar.');
         }
 
         if (! Hash::check($credentials['password'], $user->password)) {
             throw \Illuminate\Validation\ValidationException::withMessages([
                 'email' => ['Password salah.'],
-            ]);
-        }
-
-        if (is_null($user->email_verified_at)) {
-            throw ValidationException::withMessages([
-                'email' => ['Email belum diverifikasi. Silakan periksa email Anda untuk kode OTP verifikasi.'],
             ]);
         }
 

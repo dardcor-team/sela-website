@@ -96,7 +96,6 @@ jobs:
             SESSION_DRIVER=database
             APP_KEY=${{ secrets.APP_KEY }}
             APP_URL=${{ secrets.APP_URL }}
-            ETHOL_BASE_URL=https://ethol.pens.ac.id
             MAIL_MAILER=smtp
             MAIL_HOST=smtp.gmail.com
             MAIL_PORT=587
