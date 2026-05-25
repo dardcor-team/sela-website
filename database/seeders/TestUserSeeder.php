@@ -36,5 +36,32 @@ class TestUserSeeder extends Seeder
                 'updated_at' => now()
             ]);
         }
+
+        // Seed Super Admin
+        $adminEmail = 'admin@pens.ac.id';
+        $adminExists = DB::table('users')->where('email', $adminEmail)->exists();
+
+        if (!$adminExists) {
+            $adminId = Str::uuid()->toString();
+
+            DB::table('users')->insert([
+                'id' => $adminId,
+                'username' => 'superadmin',
+                'email' => $adminEmail,
+                'password' => Hash::make('admin123'),
+                'role' => 'super_admin',
+                'email_verified_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::table('profiles')->insertOrIgnore([
+                'id' => $adminId,
+                'username' => 'superadmin',
+                'full_name' => 'Super Admin Sela',
+                'role' => 'super_admin',
+                'updated_at' => now()
+            ]);
+        }
     }
 }
