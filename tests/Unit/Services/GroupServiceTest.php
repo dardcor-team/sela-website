@@ -69,7 +69,7 @@ class GroupServiceTest extends TestCase
         $newUser = $this->createAuthenticatedUser();
         $result = $this->service->joinGroup('ABCDEF', $newUser->id);
 
-        $this->assertEquals($group->id, $result->id);
+        $this->assertEquals($group->id, $result['group']->id);
         $this->assertDatabaseHas('group_members', [
             'group_id' => $group->id,
             'user_id' => $newUser->id
