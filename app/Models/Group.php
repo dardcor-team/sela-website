@@ -28,6 +28,7 @@ class Group extends Model
         'invitation_code',
         'lecture_code',
         'created_by',
+        'is_active',
     ];
 
     protected function casts(): array
@@ -36,6 +37,7 @@ class Group extends Model
             'group_number' => 'integer',
             'member_limit' => 'integer',
             'created_at' => 'datetime',
+            'is_active' => 'boolean',
         ];
     }
 

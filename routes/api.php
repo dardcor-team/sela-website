@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\GroupMemberController;
+use App\Http\Controllers\Api\GroupJoinRequestController;
 use App\Http\Controllers\Api\SubTaskController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\UserController;
@@ -119,6 +120,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/groups', [GroupController::class, 'store']);
     Route::post('/groups/join', [GroupController::class, 'join']);
     Route::delete('/groups/{id}', [GroupController::class, 'destroy']);
+
+    Route::post('/group-join-requests/{id}/accept', [GroupJoinRequestController::class, 'accept']);
+    Route::post('/group-join-requests/{id}/reject', [GroupJoinRequestController::class, 'reject']);
 
     /*
     |--------------------------------------------------------------------------

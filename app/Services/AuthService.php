@@ -61,6 +61,9 @@ class AuthService
             ]);
         }
 
+        // Hapus semua token sebelumnya (Hanya 1 device yang aktif)
+        $user->tokens()->delete();
+
         $expiration = ($credentials['remember_me'] ?? false) 
             ? now()->addHours(24) 
             : now()->addHour();

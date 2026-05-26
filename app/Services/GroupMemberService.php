@@ -53,6 +53,15 @@ class GroupMemberService
         $member = GroupMember::where('group_id', $groupId)
             ->where('user_id', $userId)
             ->firstOrFail();
+
+        // If the user removing is not the member themselves, it's a kick.
+        if (auth()->id() !== $userId) {
+            \Illuminate\Support\Facades\DB::table('group_kicked_members')->updateOrInsert(
+                ['group_id' => $groupId, 'user_id' => $userId],
+                ['created_at' => now(), 'updated_at' => now()]
+            );
+        }
+
         return $member->delete();
     }
 }

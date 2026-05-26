@@ -64,7 +64,12 @@ class GroupController extends Controller
     public function destroy($id)
     {
         $group = \App\Models\Group::findOrFail($id);
-        $group->delete();
+        $group->update(['is_active' => false]);
+        // Also remove members and tasks if needed to simulate hard delete behavior
+        $group->tasks()->each(function ($task) {
+            $task->delete();
+        });
+        $group->members()->delete();
 
         return response()->json(null, 204);
     }

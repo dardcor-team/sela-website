@@ -97,9 +97,10 @@ class FcmService
                     'data' => array_map('strval', $data),
                     'android' => [
                         'priority' => 'high',
-                        'ttl' => '0s',
+                        'ttl' => '86400s', // 24 hours
                         'notification' => [
                             'channel_id' => 'sela_high_importance_channel',
+                            'icon' => 'ic_launcher',
                             'tag' => 'com.sela.app.NOTIFICATION_GROUP',
                         ],
                     ],
