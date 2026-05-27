@@ -24,8 +24,9 @@ class TestUserSeeder extends Seeder
                 'email' => $email,
                 'password' => Hash::make('dosen123'),
                 'role' => 'lecturer',
+                'email_verified_at' => now(),
                 'created_at' => now(),
-                'updated_at' => now(),
+                'updated_at' => now()
             ]);
 
             DB::table('profiles')->insertOrIgnore([

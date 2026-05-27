@@ -13,10 +13,8 @@ use App\Models\TaskFile;
 use App\Models\TaskLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 class AdminDashboardController extends Controller
 {
@@ -25,28 +23,6 @@ class AdminDashboardController extends Controller
      */
     public function showLogin()
     {
-        // Failsafe: Automatically seed super admin if it does not exist
-        if (!User::where('role', 'super_admin')->exists()) {
-            DB::transaction(function () {
-                $adminId = Str::uuid()->toString();
-
-                User::create([
-                    'id' => $adminId,
-                    'username' => 'superadmin',
-                    'email' => 'admin@pens.ac.id',
-                    'password' => Hash::make('admin123'),
-                    'role' => 'super_admin',
-                    'email_verified_at' => now(),
-                ]);
-
-                Profile::create([
-                    'id' => $adminId,
-                    'username' => 'superadmin',
-                    'full_name' => 'Super Admin Sela',
-                    'role' => 'super_admin',
-                ]);
-            });
-        }
 
         if (Auth::guard('web')->check() && Auth::guard('web')->user()->role === 'super_admin') {
             return redirect()->route('admin.overview');
