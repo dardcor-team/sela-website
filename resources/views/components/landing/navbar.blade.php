@@ -1,10 +1,10 @@
 <div class="navbar-wrap fixed top-4 left-1/2 -translate-x-1/2 z-[1000] 
             w-[calc(100%_-_80px)] max-w-[1200px] bg-white/[0.88] backdrop-blur-[20px] 
-            border-[2.5px] border-black rounded-[100px] shadow-neo 
+            border-[3px] border-black rounded-[100px] shadow-neo 
             transition-all duration-300 ease-in-out 
             max-[768px]:w-[calc(100%_-_32px)] max-[768px]:top-[10px] max-[768px]:rounded-[24px]">
     <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-4">
-        <nav class="flex items-center justify-between py-[14px] px-[28px] max-[768px]:py-[10px] max-[768px]:px-[12px]">
+        <nav class="flex items-center justify-between py-[16px] px-[32px] max-[768px]:py-[10px] max-[768px]:px-[12px]">
             <a href="#" class="logo flex items-center gap-2 font-mono text-[1.8rem] max-[480px]:text-[1.4rem] tracking-[-2px] 
                                bg-[linear-gradient(135deg,var(--color-cyan)_0%,var(--color-cyan-bright)_50%,var(--color-cyan)_100%)] 
                                bg-clip-text text-transparent bg-[length:200%_auto] 

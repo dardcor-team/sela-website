@@ -1,4 +1,4 @@
-<section class="hero pt-[140px] pb-[140px] max-[768px]:pt-[120px] max-[768px]:pb-[80px] relative 
+<section class="hero pt-[160px] pb-[120px] max-[768px]:pt-[120px] max-[768px]:pb-[80px] relative 
                 bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
                 bg-[size:50px_50px] overflow-hidden animate-[grid-move_20s_linear_infinite]">
     <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-5">
@@ -6,11 +6,11 @@
             
             <div class="hero-content">
                 
-                <h1 class="reveal d1 text-[3.2rem] max-[768px]:text-[2.4rem] max-[480px]:text-[1.7rem] text-black mb-6 leading-[1.1] font-mono font-normal uppercase">
+                <h1 class="reveal d1 text-[3.2rem] max-[768px]:text-[2.4rem] max-[480px]:text-[1.7rem] text-black mb-8 leading-[1.05] font-mono font-normal uppercase">
                     Kerja Kelompok <em class="text-cyan not-italic">Adil</em>,<br>Tanpa Drama Free-Rider.
                 </h1>
                 
-                <p class="reveal d2 text-[1.15rem] max-[480px]:text-[1rem] text-muted mb-[40px] max-[768px]:mb-[28px] font-medium leading-[1.7] max-w-[480px] max-[992px]:max-w-full max-[992px]:mx-auto">
+                <p class="reveal d2 text-[1.2rem] max-[480px]:text-[1rem] text-muted mb-[48px] max-[768px]:mb-[32px] font-medium leading-[1.8] max-w-[520px] max-[992px]:max-w-full max-[992px]:mx-auto">
                     SELA membagi tugas dengan cerdas menggunakan teknologi AI, memantau kontribusi setiap anggota, dan memastikan kolaborasi mahasiswa berjalan transparan.
                 </p>
                 

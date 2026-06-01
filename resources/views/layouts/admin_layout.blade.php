@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('images/sela.png') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,17 +17,11 @@
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['DM Sans', 'sans-serif'],
-                        mono: ['Rubik Mono One', 'monospace']
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        cyan: '#06b6d4',
-                        primary: { DEFAULT: '#06b6d4', dark: '#0891b2', light: '#cffafe' },
+                        primary: { DEFAULT: '#0089A5', dark: '#006CA5', light: '#00A3C4' },
                     },
-                    boxShadow: {
-                        'neo': '4px 4px 0px #000',
-                        'neo-hover': '6px 6px 0px #000',
-                    }
                 }
             }
         }
@@ -44,351 +38,129 @@
     </script>
 
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; height: 100%; }
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: #ffffff;
-            color: #000;
-            background-image: radial-gradient(#000 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .dark body { 
-            background-color: #111; color: #fff; 
-            background-image: radial-gradient(#333 1px, transparent 1px);
-        }
-
-        /* Sidebar */
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Layout */
         #sidebar {
             width: 260px;
-            min-width: 260px;
             height: 100vh;
             position: fixed;
-            top: 0;
-            left: 0;
+            background: #ffffff;
+            border-right: 2px solid #cbd5e1;
+            z-index: 100;
             display: flex;
             flex-direction: column;
-            background: #fff;
-            border-right: 4px solid #000;
-            z-index: 100;
-            transition: transform 0.3s cubic-bezier(0.19,1,0.22,1);
-            overflow-y: auto;
         }
-        .dark #sidebar { background: #000; border-right-color: #fff; }
+        .dark #sidebar { background: #0f172a; border-right-color: #334155; }
+        #main-wrapper { margin-left: 260px; min-height: 100vh; background: #f1f5f9; }
+        .dark #main-wrapper { background: #020617; }
+        #topbar { height: 64px; background: #fff; border-bottom: 2px solid #cbd5e1; }
+        .dark #topbar { background: #0f172a; border-bottom-color: #334155; }
 
-        @media (max-width: 992px) {
-            #sidebar { transform: translateX(-100%); }
-            #sidebar.open { transform: translateX(0); }
-        }
-
+        /* Nav */
         .nav-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 20px;
-            color: #000;
-            text-decoration: none;
-            font-weight: 700;
-            border: 3px solid transparent;
-            border-radius: 12px;
-            margin: 4px 16px;
-            transition: all 0.2s cubic-bezier(0.19,1,0.22,1);
+            padding: 10px 16px;
+            color: #334155;
+            font-weight: 600;
+            border-radius: 8px;
+            margin: 4px 12px;
             font-size: 0.95rem;
         }
-        .dark .nav-item { color: #fff; }
-        .nav-item svg { width: 22px; height: 22px; }
+        .dark .nav-item { color: #f1f5f9; }
 
-        .nav-item:hover {
-            background: #cffafe;
-            color: #000;
-            border-color: #000;
-            transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0 #000;
-        }
-        .dark .nav-item:hover {
-            background: #000;
-            color: #06b6d4;
-            border-color: #fff;
-            box-shadow: 4px 4px 0 #fff;
-        }
-        .nav-item.active {
-            background: #06b6d4;
-            color: #fff;
-            border-color: #000;
-            box-shadow: 4px 4px 0 #000;
-        }
-        .dark .nav-item.active {
-            background: #06b6d4;
-            color: #000;
-            border-color: #fff;
-            box-shadow: 4px 4px 0 #fff;
-        }
+        .nav-item:hover { background: #f1f5f9; color: #0891b2; }
+        .dark .nav-item:hover { background: #1e293b; color: #38bdf8; }
+        .nav-item.active { background: #e0f2fe; color: #0369a1; font-weight: 700; }
+        .dark .nav-item.active { background: #0c4a6e; color: #bae6fd; }
 
-        .nav-section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #000;
-            margin: 20px 20px 8px;
-            font-weight: 800;
-            font-family: 'Rubik Mono One', monospace;
-        }
-        .dark .nav-section-title { color: #fff; }
-
-        /* Main Wrapper */
-        #main-wrapper {
-            margin-left: 260px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        @media (max-width: 992px) {
-            #main-wrapper { margin-left: 0; }
-        }
-
-        /* Topbar */
-        #topbar {
-            height: 75px;
-            background: #fff;
-            border-bottom: 4px solid #000;
-            display: flex;
-            align-items: center;
-            padding: 0 24px;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-        }
-        .dark #topbar { background: #000; border-bottom-color: #fff; }
-
-        #content { padding: 32px 24px; flex: 1; }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; border-left: 2px solid #000; }
-        .dark ::-webkit-scrollbar-track { border-left-color: #fff; }
-        ::-webkit-scrollbar-thumb { background: #000; }
-        .dark ::-webkit-scrollbar-thumb { background: #fff; }
-
-        /* Neo Brutalism Components */
-        .neo-card {
-            background: #fff;
-            border: 4px solid #000;
-            border-radius: 16px;
-            box-shadow: 6px 6px 0 #000;
-            padding: 24px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .dark .neo-card { background: #111; border-color: #fff; box-shadow: 6px 6px 0 #fff; }
-        .neo-card:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 9px 9px 0 #000;
-        }
-        .dark .neo-card:hover { box-shadow: 9px 9px 0 #fff; }
-
-        .neo-btn {
-            background: #06b6d4;
-            color: #fff;
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 10px 20px;
-            font-weight: 700;
-            font-family: 'Rubik Mono One', monospace;
-            font-size: 0.8rem;
-            cursor: pointer;
-            box-shadow: 4px 4px 0 #000;
-            transition: all 0.2s cubic-bezier(0.19,1,0.22,1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .dark .neo-btn { border-color: #fff; box-shadow: 4px 4px 0 #fff; color: #000; }
-        .neo-btn:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 7px 7px 0 #000;
-        }
-        .dark .neo-btn:hover { box-shadow: 7px 7px 0 #fff; }
-
-        /* Badges */
-        .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; border: 2px solid #000; box-shadow: 2px 2px 0 #000; text-transform: uppercase; letter-spacing: 1px; }
-        .dark .badge { border-color: #fff; box-shadow: 2px 2px 0 #fff; }
-        .badge-primary { background: #06b6d4; color: #fff; }
-        .badge-success { background: #a3e635; color: #000; }
-        .badge-warning { background: #fde047; color: #000; }
-        .badge-danger  { background: #f43f5e; color: #fff; }
-        .badge-info    { background: #38bdf8; color: #000; }
-
-        .dark .badge-primary { color: #000; }
+        /* Components */
+        .card { background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .dark .card { background: #1e293b; border-color: #334155; box-shadow: none; }
+        .btn-primary { background: #0089A5; color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: 600; }
+        .btn-primary:hover { background: #006CA5; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
     </style>
-
-    @yield('styles')
 </head>
-<body>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
 
-<!-- Sidebar Overlay (mobile) -->
-<div id="sidebar-overlay" onclick="closeSidebar()"
-     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:99;"></div>
-
-<!-- Sidebar -->
 <aside id="sidebar">
-    <!-- Logo -->
-    <div style="padding: 24px 20px; border-bottom: 4px solid #000;" class="dark:border-white">
-        <a href="{{ route('admin.overview') }}" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
-            <div style="width:44px; height:44px; background:#06b6d4; border:3px solid #000; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:22px; font-weight:800; font-family:'Rubik Mono One', monospace; flex-shrink:0; box-shadow:3px 3px 0 #000;">S</div>
-            <span style="font-size:26px; font-family:'Rubik Mono One', monospace; color:#000;" class="dark:text-white">SELA</span>
+    <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+        <a href="{{ route('admin.overview') }}" class="flex items-center gap-3 font-bold text-xl text-cyan-700">
+            SELA Admin
         </a>
     </div>
+        <nav class="p-4 flex-1">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-4">Utama</div>
+            <a href="{{ route('admin.overview') }}" class="nav-item {{ Route::is('admin.overview') ? 'active' : '' }}">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Dashboard
+            </a>
+            
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-4 mt-6">Kelola Data</div>
+            <a href="{{ route('admin.users') }}" class="nav-item {{ Route::is('admin.users') ? 'active' : '' }}">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                Pengguna
+            </a>
+            <a href="{{ route('admin.groups') }}" class="nav-item {{ Route::is('admin.groups') ? 'active' : '' }}">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                Kelompok
+            </a>
+            
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-4 mt-6">Konfigurasi</div>
+            <a href="{{ route('admin.system') }}" class="nav-item {{ Route::is('admin.system') ? 'active' : '' }}">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Sistem & Pemeliharaan
+            </a>
+        </nav>
 
-    <!-- Nav -->
-    <nav style="flex:1; padding: 16px 0; overflow-y: auto;">
-        <div class="nav-section-title">Utama</div>
-        <a href="{{ route('admin.overview') }}" class="nav-item {{ Route::is('admin.overview') ? 'active' : '' }}">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <rect x="3" y="3" width="7" height="7" rx="1"/>
-                <rect x="14" y="3" width="7" height="7" rx="1"/>
-                <rect x="3" y="14" width="7" height="7" rx="1"/>
-                <rect x="14" y="14" width="7" height="7" rx="1"/>
-            </svg>
-            Dashboard
-        </a>
-
-        <div class="nav-section-title" style="margin-top:24px;">Kelola Data</div>
-        <a href="{{ route('admin.users') }}" class="nav-item {{ Route::is('admin.users') ? 'active' : '' }}">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-            </svg>
-            Kelola Pengguna
-        </a>
-        <a href="{{ route('admin.groups') }}" class="nav-item {{ Route::is('admin.groups') || Route::is('admin.groups.detail') ? 'active' : '' }}">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 11h8M8 15h5"/>
-            </svg>
-            Kelompok & Tugas
-        </a>
-
-        <div class="nav-section-title" style="margin-top:24px;">Konfigurasi</div>
-        <a href="{{ route('admin.system') }}" class="nav-item {{ Route::is('admin.system') ? 'active' : '' }}">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
-            Sistem & Pemeliharaan
-        </a>
-    </nav>
-
-    <!-- Sidebar Footer: User + Logout -->
-    <div style="border-top: 4px solid #000; padding: 20px;" class="dark:border-white">
-        <form action="{{ route('admin.logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="w-full py-3 px-4 bg-white dark:bg-black text-red-500 border-3 border-black dark:border-white rounded-xl font-bold font-mono text-[10px] flex items-center justify-center gap-2 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                </svg>
-                KELUAR
-            </button>
-        </form>
-    </div>
+        <!-- Logout -->
+        <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+            <form action="{{ route('admin.logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="nav-item w-full text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    Keluar
+                </button>
+            </form>
+        </div>
 </aside>
 
-<!-- Main Wrapper -->
 <div id="main-wrapper">
-
-    <!-- Top Navbar -->
-    <header id="topbar">
-        <!-- Hamburger (mobile) -->
-        <button onclick="openSidebar()" style="display:none; margin-right:16px; padding:8px; border:3px solid #000; border-radius:10px; background:#fff; cursor:pointer; box-shadow:3px 3px 0 #000;" id="hamburger-btn" class="dark:border-white dark:bg-black dark:shadow-[3px_3px_0_#fff]">
-            <svg style="width:20px; height:20px; color:#000;" class="dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
+    <header id="topbar" class="flex items-center justify-between px-8">
+        <h1 class="text-lg font-semibold flex items-center gap-2">
+            <svg class="w-6 h-6 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+            @yield('page_title', 'Dashboard')
+        </h1>
+        <button onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <svg id="icon-sun" class="w-5 h-5 hidden dark:block text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <svg id="icon-moon" class="w-5 h-5 block dark:hidden text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
         </button>
-
-        <h1 class="text-xl md:text-2xl font-mono font-bold text-black dark:text-white uppercase hidden md:block tracking-wider">@yield('page_title', 'SELA ADMIN')</h1>
-
-        <!-- Right Actions -->
-        <div style="margin-left:auto; display:flex; align-items:center; gap:16px;">
-            <!-- Theme toggle -->
-            <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center border-3 border-black dark:border-white bg-white dark:bg-black rounded-xl shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] transition-all text-black dark:text-white cursor-pointer">
-                <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                    <circle cx="12" cy="12" r="5"/>
-                    <path stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                </svg>
-                <svg id="icon-moon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
-                </svg>
-            </button>
-
-            <!-- Avatar -->
-            <div class="relative cursor-pointer">
-                <div class="w-10 h-10 border-3 border-black dark:border-white bg-[#fde047] text-black rounded-xl shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] flex items-center justify-center font-mono font-bold text-lg">SA</div>
-                <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-400 border-2 border-black dark:border-white rounded-full"></span>
-            </div>
-        </div>
     </header>
-
-    <!-- Page Content -->
-    <main id="content">
-        @if(session('success'))
-        <div class="bg-[#a3e635] border-4 border-black p-4 mb-8 rounded-xl shadow-[4px_4px_0_#000] flex items-center gap-3 text-black font-bold text-sm md:text-base">
-            <svg class="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span><strong>SUKSES!</strong> {{ session('success') }}</span>
-        </div>
-        @endif
-
-        @if(session('error'))
-        <div class="bg-[#f43f5e] border-4 border-black p-4 mb-8 rounded-xl shadow-[4px_4px_0_#000] flex items-center gap-3 text-white font-bold text-sm md:text-base">
-            <svg class="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span><strong>GAGAL!</strong> {{ session('error') }}</span>
-        </div>
-        @endif
-
+    <main id="content" class="p-8">
         @yield('content')
     </main>
 </div>
 
-<script>
-    // Theme
-    function updateThemeIcons() {
-        var isDark = document.documentElement.classList.contains('dark');
-        var sun = document.getElementById('icon-sun');
-        var moon = document.getElementById('icon-moon');
-        if (sun) sun.style.display = isDark ? 'block' : 'none';
-        if (moon) moon.style.display = isDark ? 'none' : 'block';
-    }
-    updateThemeIcons();
-
-    function toggleTheme() {
-        var isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('admin-theme', isDark ? 'dark' : 'light');
+    <script>
+        function updateThemeIcons() {
+            var isDark = document.documentElement.classList.contains('dark');
+            var sun = document.getElementById('icon-sun');
+            var moon = document.getElementById('icon-moon');
+            if (sun && moon) {
+                sun.style.display = isDark ? 'block' : 'none';
+                moon.style.display = isDark ? 'none' : 'block';
+            }
+        }
         updateThemeIcons();
-    }
 
-    // Mobile sidebar
-    function openSidebar() {
-        document.getElementById('sidebar').classList.add('open');
-        document.getElementById('sidebar-overlay').style.display = 'block';
-    }
-    function closeSidebar() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebar-overlay').style.display = 'none';
-    }
-
-    // Show hamburger on mobile
-    if (window.innerWidth <= 992) {
-        var btn = document.getElementById('hamburger-btn');
-        if (btn) btn.style.display = 'flex';
-    }
-    window.addEventListener('resize', function() {
-        var btn = document.getElementById('hamburger-btn');
-        if (btn) btn.style.display = window.innerWidth <= 992 ? 'flex' : 'none';
-    });
-</script>
-
-@yield('scripts')
+        function toggleTheme() {
+            var isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('admin-theme', isDark ? 'dark' : 'light');
+            updateThemeIcons();
+        }
+    </script>
 </body>
 </html>
