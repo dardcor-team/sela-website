@@ -39,6 +39,6 @@ class GroupMember extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(Profile::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -1,130 +1,81 @@
 @extends('layouts.admin_layout')
+@section('page_title', 'Detail Kelompok')
 @section('title', 'Detail Kelompok | SELA')
 
 @section('content')
 
-{{-- Back + Header --}}
-<div style="margin-bottom:24px;">
-    <a href="{{ route('admin.groups') }}" style="display:inline-flex; align-items:center; gap:5px; font-size:12px; color:#a8aabc; text-decoration:none; font-weight:600; margin-bottom:10px; transition:color 0.2s;" onmouseover="this.style.color='#696cff'" onmouseout="this.style.color='#a8aabc'">
-        <svg style="width:14px; height:14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-        Kembali ke Daftar Kelompok
-    </a>
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-        <div>
-            <h4 style="font-size:20px; font-weight:700; color:#566a7f; margin:0 0 6px; text-transform:uppercase;" class="dark:text-gray-200">{{ $group->name }}</h4>
-            <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
-                <span style="font-size:12px; color:#a8aabc;">Mata Kuliah: <strong style="color:#566a7f;" class="dark:text-gray-300">{{ $group->course_name ?? 'N/A' }}</strong></span>
-                <span style="color:#d9dbe9;">•</span>
-                <span style="font-size:12px; color:#a8aabc;">Kelas: <strong style="color:#566a7f;" class="dark:text-gray-300">{{ $group->class_name ?? 'N/A' }}</strong></span>
-                <span style="color:#d9dbe9;">•</span>
-                <span style="font-size:12px; color:#a8aabc;">Pembuat: <strong style="color:#566a7f;" class="dark:text-gray-300">{{ $group->creator?->full_name ?? 'N/A' }}</strong></span>
-            </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:12px; color:#a8aabc; font-weight:600;">KODE:</span>
-            <span style="font-family:monospace; font-size:13px; font-weight:700; color:#696cff; background:rgba(105,108,255,0.1); padding:6px 14px; border-radius:8px; border:1px solid rgba(105,108,255,0.2);">{{ $group->invitation_code }}</span>
-        </div>
-    </div>
-</div>
+{{-- Back Button --}}
+<a href="{{ route('admin.groups') }}" class="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-white dark:bg-black text-black dark:text-white border-3 border-black dark:border-white font-black uppercase text-xs shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] transition-all rounded-lg font-mono">
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+    </svg>
+    Kembali
+</a>
 
-{{-- Main Grid --}}
-<div style="display:grid; grid-template-columns:280px 1fr; gap:20px; align-items:start;" class="detail-grid">
-
-    {{-- Members Sidebar --}}
-    <div class="card" style="padding:24px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid #f0f0f0;">
-            <h6 style="font-size:14px; font-weight:600; color:#566a7f; margin:0;" class="dark:text-gray-200">Anggota</h6>
-            <span style="background:rgba(105,108,255,0.12); color:#696cff; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700;">{{ count($members) }}</span>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:12px; max-height:400px; overflow-y:auto;">
-            @forelse($members as $member)
-            <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#f8f8fb; border-radius:8px; border:1px solid #f0f0f0;">
-                <div style="width:34px; height:34px; border-radius:50%; background:rgba(105,108,255,0.12); color:#696cff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">
-                    {{ strtoupper(substr($member->user?->username ?? 'U', 0, 2)) }}
-                </div>
-                <div style="flex:1; overflow:hidden;">
-                    <div style="font-size:12px; font-weight:600; color:#566a7f; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" class="dark:text-gray-200">{{ $member->user?->profile?->full_name ?? $member->user?->username }}</div>
-                    <div style="font-size:10px; color:#a8aabc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ $member->user?->email }}</div>
-                </div>
-                <span style="font-size:10px; font-weight:600; color:#696cff; background:rgba(105,108,255,0.1); padding:2px 6px; border-radius:4px; flex-shrink:0; text-transform:uppercase; border:1px solid rgba(105,108,255,0.2);">{{ $member->role }}</span>
-            </div>
-            @empty
-            <p style="font-size:13px; color:#a8aabc; text-align:center; padding:20px 0;">Belum ada anggota.</p>
-            @endforelse
-        </div>
-    </div>
-
-    {{-- Tasks Column --}}
+{{-- Header Banner --}}
+<div class="mb-8 p-8 bg-[#A3E635] dark:bg-[#5f8714] border-4 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] rounded-xl flex flex-col md:flex-row gap-6 md:items-center justify-between">
     <div>
-        <div class="card" style="padding:24px;">
-            <h6 style="font-size:14px; font-weight:600; color:#566a7f; margin:0 0 20px; padding-bottom:14px; border-bottom:1px solid #f0f0f0;" class="dark:text-gray-200">Daftar Tugas & Progres</h6>
-
-            @forelse($tasks as $task)
-            <div style="border:1px solid #e7e7ff; border-radius:10px; padding:18px; margin-bottom:16px; background:#fafafa; transition:border-color 0.2s;" onmouseover="this.style.borderColor='#c5c5ff'" onmouseout="this.style.borderColor='#e7e7ff'">
-                {{-- Task Header --}}
-                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
-                    <div>
-                        <h6 style="font-size:14px; font-weight:700; color:#566a7f; margin:0 0 4px;" class="dark:text-gray-200">{{ $task->title }}</h6>
-                        <span style="font-size:11px; color:#a8aabc;">Deadline: {{ $task->due_date ? date('d M Y, H:i', strtotime($task->due_date)) : 'Tanpa Deadline' }}</span>
-                    </div>
-                    @if($task->status === 'Done')
-                        <span class="badge badge-success">✓ Done</span>
-                    @elseif($task->status === 'In Progress')
-                        <span class="badge badge-warning">⚡ In Progress</span>
-                    @else
-                        <span class="badge" style="background:#f5f5f9; color:#697a8d;">○ To Do</span>
-                    @endif
-                </div>
-
-                {{-- Progress Bar --}}
-                <div style="margin-bottom:14px;">
-                    <div style="display:flex; justify-content:space-between; font-size:11px; color:#a8aabc; margin-bottom:6px;">
-                        <span>Penyelesaian Subtugas</span>
-                        <span style="font-weight:700; color:#566a7f;">{{ $task->progress_percentage }}%</span>
-                    </div>
-                    <div style="background:#e7e7ff; border-radius:20px; height:6px; overflow:hidden;">
-                        <div style="background:linear-gradient(90deg, #696cff, #9155fd); height:100%; border-radius:20px; width:{{ $task->progress_percentage }}%; transition:width 0.6s ease;"></div>
-                    </div>
-                </div>
-
-                {{-- Files & Links --}}
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; padding-top:14px; border-top:1px solid #f0f0f0;">
-                    <div>
-                        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc; margin-bottom:8px;">Berkas</div>
-                        @forelse($task->files as $file)
-                        <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 10px; background:#fff; border:1px solid #e7e7ff; border-radius:6px; margin-bottom:4px;">
-                            <span style="font-size:11px; color:#697a8d; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; padding-right:8px;">{{ $file->file_name }}</span>
-                            <a href="{{ $file->file_path }}" target="_blank" style="font-size:11px; color:#696cff; text-decoration:none; font-weight:600; flex-shrink:0;">Unduh</a>
-                        </div>
-                        @empty
-                        <p style="font-size:11px; color:#a8aabc;">Tidak ada berkas.</p>
-                        @endforelse
-                    </div>
-                    <div>
-                        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc; margin-bottom:8px;">Tautan</div>
-                        @forelse($task->links as $link)
-                        <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 10px; background:#fff; border:1px solid #e7e7ff; border-radius:6px; margin-bottom:4px;">
-                            <span style="font-size:11px; color:#697a8d; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; padding-right:8px;">{{ $link->title ?? $link->url }}</span>
-                            <a href="{{ $link->url }}" target="_blank" style="font-size:11px; color:#696cff; text-decoration:none; font-weight:600; flex-shrink:0;">Buka</a>
-                        </div>
-                        @empty
-                        <p style="font-size:11px; color:#a8aabc;">Tidak ada tautan.</p>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-            @empty
-            <div style="text-align:center; padding:40px; color:#a8aabc; font-size:13px; background:#f8f8fb; border:1px dashed #e7e7ff; border-radius:10px;">
-                Belum ada tugas di kelompok ini.
-            </div>
-            @endforelse
+        <h4 class="text-3xl md:text-4xl font-mono font-black text-black dark:text-white uppercase tracking-wider m-0">{{ $group->name }}</h4>
+        <div class="flex items-center gap-3 mt-4 flex-wrap">
+            <span class="px-3 py-1 bg-white text-black border-2 border-black font-black uppercase text-xs shadow-[2px_2px_0_#000] rounded-md font-mono">Kelas: {{ $group->schoolClass?->name ?? '-' }}</span>
+            <span class="px-3 py-1 bg-[#06b6d4] text-white border-2 border-black font-black uppercase text-xs shadow-[2px_2px_0_#000] rounded-md font-mono">Matkul: {{ $group->schoolClass?->course?->name ?? '-' }}</span>
         </div>
+    </div>
+    <div class="bg-white p-4 border-3 border-black text-center shadow-[4px_4px_0_#000] rounded-xl min-w-[150px]">
+        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1 font-mono">Kode Akses</div>
+        <div class="text-2xl font-mono font-black text-black tracking-widest">{{ $group->join_code }}</div>
     </div>
 </div>
 
-<style>
-@media (max-width: 768px) {
-    .detail-grid { grid-template-columns: 1fr !important; }
-}
-</style>
+{{-- Anggota List --}}
+<div class="mb-8">
+    <h5 class="text-xl font-mono font-black text-black dark:text-white uppercase mb-4 tracking-wider flex items-center gap-3">
+        ANGGOTA KELOMPOK
+        <span class="inline-flex items-center justify-center w-8 h-8 bg-[#fde047] border-2 border-black text-black text-sm shadow-[2px_2px_0_#000] rounded-full">{{ $group->members->count() }}</span>
+    </h5>
+    
+    <div class="bg-white dark:bg-black border-4 border-black dark:border-white shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0_#fff] overflow-hidden rounded-xl">
+        <table class="w-full border-collapse text-left text-sm font-semibold">
+            <thead>
+                <tr class="bg-[#38BDF8] dark:bg-[#0284c7] border-b-4 border-black dark:border-white">
+                    <th class="p-4 border-r-3 border-black dark:border-white font-black uppercase text-xs text-black tracking-widest font-mono">Mahasiswa</th>
+                    <th class="p-4 border-r-3 border-black dark:border-white font-black uppercase text-xs text-black tracking-widest font-mono text-center">Status</th>
+                    <th class="p-4 font-black uppercase text-xs text-black tracking-widest font-mono text-center">Bergabung Pada</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y-3 divide-black dark:divide-white">
+                @forelse($group->members as $member)
+                <tr class="hover:bg-cyan-50/50 dark:hover:bg-cyan-900/30 transition-colors">
+                    <td class="p-4 border-r-3 border-black dark:border-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 border-2 border-black dark:border-white bg-[#FDA4AF] text-black font-black uppercase flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] shrink-0 rounded-lg font-mono">
+                                {{ strtoupper(substr($member->user->profile?->full_name ?? $member->user->username ?? 'U', 0, 2)) }}
+                            </div>
+                            <div>
+                                <div class="font-extrabold text-black dark:text-white text-base leading-none mb-1">{{ $member->user->profile?->full_name ?? $member->user->username }}</div>
+                                <div class="text-xs font-bold text-gray-500 dark:text-gray-400">{{ "@".$member->user->username }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-4 border-r-3 border-black dark:border-white text-center">
+                        @if($member->status === 'active')
+                            <span class="inline-block px-3 py-1 bg-[#A3E635] text-black border-2 border-black dark:border-white font-black uppercase text-[10px] tracking-wider shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] rounded-md font-mono">Aktif</span>
+                        @else
+                            <span class="inline-block px-3 py-1 bg-[#F43F5E] text-white border-2 border-black dark:border-white font-black uppercase text-[10px] tracking-wider shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] rounded-md font-mono">{{ $member->status }}</span>
+                        @endif
+                    </td>
+                    <td class="p-4 text-center font-bold text-black dark:text-gray-200">
+                        {{ $member->joined_at ? $member->joined_at->format('d M Y') : '-' }}
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" class="p-10 text-center font-bold text-gray-500 uppercase tracking-wider font-mono">Belum ada anggota di kelompok ini.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
 @endsection

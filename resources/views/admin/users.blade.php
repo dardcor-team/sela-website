@@ -1,92 +1,93 @@
 @extends('layouts.admin_layout')
+@section('page_title', 'Kelola Pengguna')
 @section('title', 'Kelola Pengguna | SELA')
 
 @section('content')
 
-<div style="margin-bottom:24px;">
-    <h4 style="font-size:20px; font-weight:600; color:#566a7f; margin:0 0 4px;" class="dark:text-gray-200">Kelola Pengguna</h4>
-    <p style="font-size:13px; color:#a8aabc; margin:0;">Manajemen akun mahasiswa, dosen, dan admin</p>
+{{-- Header Banner: Neo-Brutalist Block --}}
+<div class="mb-8 p-6 bg-[#A3E635] dark:bg-[#5f8714] border-4 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] transition-colors rounded-xl">
+    <h4 class="text-2xl md:text-3xl font-mono font-black text-black dark:text-white uppercase tracking-wider m-0">KUMPULAN PENGGUNA</h4>
+    <p class="text-xs md:text-sm font-bold text-black dark:text-gray-200 uppercase tracking-wide mt-2">Manajemen akun mahasiswa, dosen, dan admin</p>
 </div>
 
-{{-- Search & Filter --}}
-<div class="card" style="padding:20px 24px; margin-bottom:20px;">
+{{-- Search & Filter Container --}}
+<div class="bg-white dark:bg-black border-4 border-black dark:border-white p-6 mb-8 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] rounded-xl">
     <form action="{{ route('admin.users') }}" method="GET">
-        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
-            <div style="flex:1; min-width:200px;">
-                <label style="display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc; margin-bottom:6px;">Cari Pengguna</label>
-                <input type="text" name="search" value="{{ $search }}" placeholder="Nama, username, atau emailâ€¦"
-                    style="width:100%; padding:9px 14px; border:1px solid #d9dbe9; border-radius:8px; font-size:13px; color:#566a7f; background:#fff; outline:none; font-family:'Public Sans',sans-serif; box-sizing:border-box;"
-                    class="dark-input">
+        <div class="flex gap-4 flex-wrap items-end">
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-black uppercase tracking-wider text-black dark:text-white mb-2 font-mono">Cari Pengguna</label>
+                <input type="text" name="search" value="{{ $search }}" placeholder="Nama, username, atau email…"
+                    class="w-full px-4 py-3 border-3 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold outline-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] focus:shadow-[4px_4px_0_#000] dark:focus:shadow-[4px_4px_0_#fff] focus:-translate-y-1 focus:-translate-x-1 transition-all duration-150 rounded-lg">
             </div>
-            <div style="min-width:160px;">
-                <label style="display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc; margin-bottom:6px;">Filter Peran</label>
-                <select name="role" style="width:100%; padding:9px 14px; border:1px solid #d9dbe9; border-radius:8px; font-size:13px; color:#566a7f; background:#fff; outline:none; font-family:'Public Sans',sans-serif; box-sizing:border-box;" class="dark-input">
+            <div class="min-w-[180px]">
+                <label class="block text-xs font-black uppercase tracking-wider text-black dark:text-white mb-2 font-mono">Filter Peran</label>
+                <select name="role" class="w-full px-4 py-3 border-3 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold outline-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] focus:shadow-[4px_4px_0_#000] dark:focus:shadow-[4px_4px_0_#fff] focus:-translate-y-1 focus:-translate-x-1 transition-all duration-150 rounded-lg">
                     <option value="">Semua Peran</option>
                     <option value="student" {{ $role === 'student' ? 'selected' : '' }}>Mahasiswa</option>
                     <option value="lecturer" {{ $role === 'lecturer' ? 'selected' : '' }}>Dosen</option>
                     <option value="super_admin" {{ $role === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
                 </select>
             </div>
-            <div style="display:flex; gap:8px;">
-                <button type="submit" style="padding:9px 20px; background:#696cff; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Public Sans',sans-serif; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">Cari</button>
-                <a href="{{ route('admin.users') }}" style="padding:9px 20px; background:#f5f5f9; color:#697a8d; border:1px solid #d9dbe9; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center;">Reset</a>
+            <div class="flex gap-3">
+                <button type="submit" class="px-6 py-3 bg-[#06b6d4] text-white border-3 border-black dark:border-white font-black uppercase tracking-wider text-xs shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] active:shadow-[1px_1px_0_#000] transition-all cursor-pointer font-mono rounded-lg">
+                    Cari
+                </button>
+                <a href="{{ route('admin.users') }}" class="px-6 py-3 bg-white dark:bg-black text-black dark:text-white border-3 border-black dark:border-white font-black uppercase tracking-wider text-xs shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] active:shadow-[1px_1px_0_#000] transition-all cursor-pointer inline-flex items-center justify-center font-mono rounded-lg">
+                    Reset
+                </a>
             </div>
         </div>
     </form>
 </div>
 
-{{-- Table --}}
-<div class="card" style="overflow:hidden;">
-    <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+{{-- Main Data Table --}}
+<div class="bg-white dark:bg-black border-4 border-black dark:border-white shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0_#fff] overflow-hidden mb-12 rounded-xl">
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-left text-sm font-semibold">
             <thead>
-                <tr style="background:#f8f8fb; border-bottom:1px solid #e7e7ff;">
-                    <th style="padding:12px 24px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc; white-space:nowrap;">Pengguna</th>
-                    <th style="padding:12px 16px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc;">Email</th>
-                    <th style="padding:12px 16px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc;">Peran</th>
-                    <th style="padding:12px 16px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc; white-space:nowrap;">Terdaftar</th>
-                    <th style="padding:12px 24px; text-align:right; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc;">Aksi</th>
+                <tr class="bg-[#FDE047] dark:bg-[#ca8a04] border-b-4 border-black dark:border-white">
+                    <th class="p-4 border-r-3 border-black dark:border-white font-black uppercase text-xs text-black tracking-widest whitespace-nowrap font-mono">Pengguna</th>
+                    <th class="p-4 border-r-3 border-black dark:border-white font-black uppercase text-xs text-black tracking-widest font-mono">Email</th>
+                    <th class="p-4 border-r-3 border-black dark:border-white font-black uppercase text-xs text-black tracking-widest font-mono">Peran</th>
+                    <th class="p-4 border-r-3 border-black dark:border-white font-black uppercase text-xs text-black tracking-widest whitespace-nowrap font-mono">Terdaftar</th>
+                    <th class="p-4 font-black uppercase text-xs text-black tracking-widest text-right font-mono">Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y-3 divide-black dark:divide-white">
                 @forelse($users as $user)
-                <tr style="border-bottom:1px solid #f0f0f0; transition:background 0.15s;" onmouseover="this.style.background='#f8f8fb'" onmouseout="this.style.background='transparent'">
-                    <td style="padding:14px 24px;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:36px; height:36px; border-radius:50%; background:rgba(105,108,255,0.12); color:#696cff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">
+                <tr class="hover:bg-yellow-50/50 dark:hover:bg-zinc-800/40 transition-colors">
+                    <td class="p-4 border-r-3 border-black dark:border-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 border-2 border-black dark:border-white bg-[#FDA4AF] text-black font-black uppercase flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] shrink-0 rounded-lg font-mono">
                                 {{ strtoupper(substr($user->username ?? 'U', 0, 2)) }}
                             </div>
                             <div>
-                                <div style="font-weight:600; color:#566a7f;" class="dark:text-gray-200">{{ $user->profile?->full_name ?? $user->username }}</div>
-                                <div style="font-size:11px; color:#a8aabc;">@{{ $user->username }}</div>
+                                <div class="font-extrabold text-black dark:text-white text-base leading-none mb-1">{{ $user->profile?->full_name ?? $user->username }}</div>
+                                <div class="text-xs font-bold text-gray-500 dark:text-gray-400">{{ "@".$user->username }}</div>
                             </div>
                         </div>
                     </td>
-                    <td style="padding:14px 16px; color:#697a8d;">{{ $user->email }}</td>
-                    <td style="padding:14px 16px;">
+                    <td class="p-4 border-r-3 border-black dark:border-white text-black dark:text-gray-200 font-bold">{{ $user->email }}</td>
+                    <td class="p-4 border-r-3 border-black dark:border-white">
                         @if($user->role === 'student')
-                            <span class="badge badge-primary">Mahasiswa</span>
+                            <span class="inline-block px-3 py-1 bg-[#38BDF8] text-black border-2 border-black dark:border-white font-black uppercase text-[10px] tracking-wider shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] rounded-md font-mono">Mahasiswa</span>
                         @elseif($user->role === 'lecturer')
-                            <span class="badge badge-info">Dosen</span>
+                            <span class="inline-block px-3 py-1 bg-[#A3E635] text-black border-2 border-black dark:border-white font-black uppercase text-[10px] tracking-wider shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] rounded-md font-mono">Dosen</span>
                         @else
-                            <span class="badge badge-danger">Super Admin</span>
+                            <span class="inline-block px-3 py-1 bg-[#F43F5E] text-white border-2 border-black dark:border-white font-black uppercase text-[10px] tracking-wider shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] rounded-md font-mono">Super Admin</span>
                         @endif
                     </td>
-                    <td style="padding:14px 16px; color:#a8aabc; white-space:nowrap; font-size:12px;">
+                    <td class="p-4 border-r-3 border-black dark:border-white text-black dark:text-gray-200 font-bold whitespace-nowrap text-xs">
                         {{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}
                     </td>
-                    <td style="padding:14px 24px; text-align:right; white-space:nowrap;">
+                    <td class="p-4 text-right whitespace-nowrap">
                         <button type="button" onclick="openRoleModal('{{ $user->id }}', '{{ $user->email }}', '{{ $user->role }}')"
-                            style="padding:6px 12px; background:#f5f5f9; color:#697a8d; border:1px solid #d9dbe9; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; margin-right:6px; font-family:'Public Sans',sans-serif; transition:all 0.2s;"
-                            onmouseover="this.style.background='rgba(105,108,255,0.08)'; this.style.color='#696cff'; this.style.borderColor='#696cff';"
-                            onmouseout="this.style.background='#f5f5f9'; this.style.color='#697a8d'; this.style.borderColor='#d9dbe9';">
+                            class="px-3 py-2 bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white font-black text-[10px] uppercase shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] hover:-translate-y-1 hover:-translate-x-1 active:translate-x-0 active:translate-y-0 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] active:shadow-[1px_1px_0_#000] transition-all cursor-pointer mr-2 rounded-lg font-mono">
                             Ubah Peran
                         </button>
                         @if($user->id !== Auth::id())
                         <button type="button" onclick="confirmDelete('{{ $user->id }}', '{{ $user->email }}')"
-                            style="padding:6px 12px; background:rgba(234,84,85,0.08); color:#ea5455; border:1px solid rgba(234,84,85,0.25); border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Public Sans',sans-serif; transition:all 0.2s;"
-                            onmouseover="this.style.background='rgba(234,84,85,0.15)';"
-                            onmouseout="this.style.background='rgba(234,84,85,0.08)';">
+                            class="px-3 py-2 bg-[#FF6B6B] text-black border-2 border-black dark:border-white font-black text-[10px] uppercase shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] hover:-translate-y-1 hover:-translate-x-1 active:translate-x-0 active:translate-y-0 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] active:shadow-[1px_1px_0_#000] transition-all cursor-pointer rounded-lg font-mono">
                             Hapus
                         </button>
                         @endif
@@ -94,7 +95,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" style="padding:40px; text-align:center; color:#a8aabc; font-size:13px;">Tidak ada pengguna ditemukan.</td>
+                    <td colspan="5" class="p-10 text-center font-bold text-gray-500 uppercase tracking-wider font-mono">Tidak ada pengguna ditemukan.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -102,45 +103,45 @@
     </div>
 
     @if($users->hasPages())
-    <div style="padding:16px 24px; border-top:1px solid #f0f0f0; background:#f8f8fb;">
+    <div class="p-4 border-t-4 border-black dark:border-white bg-white dark:bg-black font-bold">
         {{ $users->links() }}
     </div>
     @endif
 </div>
 
 {{-- Role Modal --}}
-<div id="roleModal" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#fff; border-radius:12px; padding:28px; width:100%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.15);" class="dark-card">
-        <h5 style="font-size:16px; font-weight:700; color:#566a7f; margin:0 0 6px;" class="dark:text-gray-200">Ubah Peran Pengguna</h5>
-        <p style="font-size:13px; color:#a8aabc; margin:0 0 20px;">Ubah peran untuk: <strong id="modalUserEmail" style="color:#566a7f;" class="dark:text-gray-200"></strong></p>
+<div id="roleModal" class="hidden fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white dark:bg-black border-4 border-black dark:border-white p-8 max-w-md w-full shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#fff] relative rounded-xl transform transition-transform scale-95" id="roleModalContent">
+        <h5 class="text-xl font-black uppercase text-black dark:text-white border-b-4 border-black dark:border-white pb-3 mb-4 font-mono">UBAH PERAN</h5>
+        <p class="text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wide mb-6">Ubah peran untuk: <br><strong id="modalUserEmail" class="text-black dark:text-white font-mono break-all text-sm mt-1 inline-block"></strong></p>
         <form id="roleForm" method="POST">
             @csrf
-            <div style="margin-bottom:20px;">
-                <label style="display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#a8aabc; margin-bottom:8px;">Peran Baru</label>
-                <select name="role" id="modalRoleSelect" style="width:100%; padding:10px 14px; border:1px solid #d9dbe9; border-radius:8px; font-size:13px; color:#566a7f; background:#fff; outline:none; font-family:'Public Sans',sans-serif; box-sizing:border-box;">
+            <div class="mb-8">
+                <label class="block text-xs font-black uppercase tracking-wider text-black dark:text-white mb-2 font-mono">Peran Baru</label>
+                <select name="role" id="modalRoleSelect" class="w-full px-4 py-3 border-3 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold outline-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] focus:shadow-[4px_4px_0_#000] dark:focus:shadow-[4px_4px_0_#fff] focus:-translate-y-1 focus:-translate-x-1 transition-all rounded-lg">
                     <option value="student">Mahasiswa</option>
                     <option value="lecturer">Dosen</option>
                     <option value="super_admin">Super Admin</option>
                 </select>
             </div>
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" onclick="closeRoleModal()" style="padding:9px 20px; background:#f5f5f9; color:#697a8d; border:1px solid #d9dbe9; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Public Sans',sans-serif;">Batal</button>
-                <button type="submit" style="padding:9px 20px; background:#696cff; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Public Sans',sans-serif;">Simpan</button>
+            <div class="flex justify-end gap-4 mt-8">
+                <button type="button" onclick="closeRoleModal()" class="px-5 py-3 bg-white dark:bg-black text-black dark:text-white border-3 border-black dark:border-white font-black uppercase text-xs shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] transition-all cursor-pointer rounded-lg font-mono">Batal</button>
+                <button type="submit" class="px-5 py-3 bg-[#A3E635] text-black border-3 border-black dark:border-white font-black uppercase text-xs shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] transition-all cursor-pointer rounded-lg font-mono">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
 {{-- Delete Modal --}}
-<div id="deleteModal" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#fff; border-radius:12px; padding:28px; width:100%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.15);" class="dark-card">
-        <h5 style="font-size:16px; font-weight:700; color:#ea5455; margin:0 0 6px;">Hapus Akun</h5>
-        <p style="font-size:13px; color:#a8aabc; margin:0 0 20px;">Yakin ingin menghapus <strong id="deleteUserEmail" style="color:#566a7f;"></strong>? Tindakan ini permanen.</p>
+<div id="deleteModal" class="hidden fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white dark:bg-black border-4 border-black dark:border-white p-8 max-w-md w-full shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#fff] relative rounded-xl transform transition-transform scale-95" id="deleteModalContent">
+        <h5 class="text-xl font-black uppercase text-[#F43F5E] border-b-4 border-black dark:border-white pb-3 mb-4 font-mono">HAPUS AKUN</h5>
+        <p class="text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wide mb-6">Yakin ingin menghapus <strong id="deleteUserEmail" class="text-black dark:text-white font-mono break-all inline-block mt-1"></strong>?<br><br> Tindakan ini permanen.</p>
         <form id="deleteForm" method="POST">
             @csrf
-            <div style="display:flex; justify-content:flex-end; gap:8px;">
-                <button type="button" onclick="closeDeleteModal()" style="padding:9px 20px; background:#f5f5f9; color:#697a8d; border:1px solid #d9dbe9; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Public Sans',sans-serif;">Batal</button>
-                <button type="submit" style="padding:9px 20px; background:#ea5455; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Public Sans',sans-serif;">Hapus</button>
+            <div class="flex justify-end gap-4 mt-8">
+                <button type="button" onclick="closeDeleteModal()" class="px-5 py-3 bg-white dark:bg-black text-black dark:text-white border-3 border-black dark:border-white font-black uppercase text-xs shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] transition-all cursor-pointer rounded-lg font-mono">Batal</button>
+                <button type="submit" class="px-5 py-3 bg-[#F43F5E] text-white border-3 border-black dark:border-white font-black uppercase text-xs shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#fff] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[5px_5px_0_#000] dark:hover:shadow-[5px_5px_0_#fff] transition-all cursor-pointer rounded-lg font-mono">Hapus</button>
             </div>
         </form>
     </div>
@@ -153,16 +154,40 @@
         document.getElementById('modalUserEmail').innerText = email;
         document.getElementById('modalRoleSelect').value = currentRole;
         document.getElementById('roleForm').action = "{{ route('admin.users.update-role', ':id') }}".replace(':id', userId);
-        document.getElementById('roleModal').style.display = 'flex';
+        const modal = document.getElementById('roleModal');
+        const content = document.getElementById('roleModalContent');
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+        setTimeout(() => content.classList.replace('scale-95', 'scale-100'), 10);
     }
-    function closeRoleModal() { document.getElementById('roleModal').style.display = 'none'; }
+    function closeRoleModal() {
+        const modal = document.getElementById('roleModal');
+        const content = document.getElementById('roleModalContent');
+        content.classList.replace('scale-100', 'scale-95');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+        }, 150);
+    }
 
     function confirmDelete(userId, email) {
         document.getElementById('deleteUserEmail').innerText = email;
         document.getElementById('deleteForm').action = "{{ route('admin.users.delete', ':id') }}".replace(':id', userId);
-        document.getElementById('deleteModal').style.display = 'flex';
+        const modal = document.getElementById('deleteModal');
+        const content = document.getElementById('deleteModalContent');
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+        setTimeout(() => content.classList.replace('scale-95', 'scale-100'), 10);
     }
-    function closeDeleteModal() { document.getElementById('deleteModal').style.display = 'none'; }
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        const content = document.getElementById('deleteModalContent');
+        content.classList.replace('scale-100', 'scale-95');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+        }, 150);
+    }
 
     // Close on backdrop click
     document.getElementById('roleModal').addEventListener('click', function(e) { if(e.target===this) closeRoleModal(); });

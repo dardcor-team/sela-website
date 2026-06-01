@@ -11,6 +11,10 @@ Route::get('/maintenance', function () {
     return view('maintenance');
 })->name('maintenance');
 
+Route::get('/coming-soon', function () {
+    return view('maintenance');
+})->name('coming-soon');
+
 // Super Admin Authentication
 Route::get('/admin/login', [AdminDashboardController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminDashboardController::class, 'login']);

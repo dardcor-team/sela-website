@@ -79,13 +79,14 @@ class AdminDashboardController extends Controller
     public function index()
     {
         // Statistics
-        $totalUsers = User::count();
+        $usersCount = User::count();
         $totalLecturers = User::where('role', 'lecturer')->count();
         $totalStudents = User::where('role', 'student')->count();
         $totalAdmins = User::where('role', 'super_admin')->count();
 
-        $totalGroups = Group::count();
-        $totalTasks = Task::count();
+        $groupsCount = Group::count();
+        $tasksCount = Task::count();
+        $coursesCount = \App\Models\Course::count();
         
         // Task status counts
         $taskStatus = [
@@ -95,7 +96,7 @@ class AdminDashboardController extends Controller
         ];
 
         // Subtasks completion rate
-        $totalSubtasks = SubtaskProgress::count();
+        $totalSubtasks = Subtask::count();
         $completedSubtasks = SubtaskProgress::where('progress', 100)->count();
         $subtaskCompletionRate = $totalSubtasks > 0 
             ? round(($completedSubtasks / $totalSubtasks) * 100, 1) 
@@ -122,8 +123,8 @@ class AdminDashboardController extends Controller
             ->get();
 
         return view('admin.overview', compact(
-            'totalUsers', 'totalLecturers', 'totalStudents', 'totalAdmins',
-            'totalGroups', 'totalTasks', 'taskStatus', 'totalSubtasks',
+            'usersCount', 'totalLecturers', 'totalStudents', 'totalAdmins',
+            'groupsCount', 'tasksCount', 'coursesCount', 'taskStatus', 'totalSubtasks',
             'completedSubtasks', 'subtaskCompletionRate', 'recentUsers',
             'recentGroups', 'recentTasks', 'courseDistribution'
         ));
@@ -141,10 +142,10 @@ class AdminDashboardController extends Controller
 
         if ($search) {
             $query->where(function($q) use ($search) {
-                $q->where('email', 'like', "%{$search}%")
-                  ->orWhere('username', 'like', "%{$search}%")
+                $q->where('email', 'ilike', "%{$search}%")
+                  ->orWhere('username', 'ilike', "%{$search}%")
                   ->orWhereHas('profile', function($pq) use ($search) {
-                      $pq->where('full_name', 'like', "%{$search}%");
+                      $pq->where('full_name', 'ilike', "%{$search}%");
                   });
             });
         }
@@ -215,6 +216,7 @@ class AdminDashboardController extends Controller
     public function groups(Request $request)
     {
         $search = $request->input('search');
+        $classFilter = $request->input('class');
 
         $query = Group::withCount('members');
 
@@ -223,9 +225,17 @@ class AdminDashboardController extends Controller
                   ->orWhere('invitation_code', 'like', "%{$search}%");
         }
 
-        $groups = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+        if ($classFilter) {
+            $selectedClass = \App\Models\SchoolClass::find($classFilter);
+            if ($selectedClass) {
+                $query->where('class_name', $selectedClass->name);
+            }
+        }
 
-        return view('admin.groups', compact('groups', 'search'));
+        $groups = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+        $classes = \App\Models\SchoolClass::all();
+
+        return view('admin.groups', compact('groups', 'search', 'classes', 'classFilter'));
     }
 
     /**
@@ -309,11 +319,11 @@ class AdminDashboardController extends Controller
         // System variables
         $phpVersion = PHP_VERSION;
         $laravelVersion = app()->version();
+        $isMaintenance = Cache::get('app_maintenance', false);
         $dbDriver = DB::connection()->getDriverName();
         $appEnv = config('app.env');
-        $maintenanceMode = Cache::get('app_maintenance', false);
 
-        return view('admin.system', compact('tableCounts', 'totalFilesCount', 'phpVersion', 'laravelVersion', 'dbDriver', 'appEnv', 'maintenanceMode'));
+        return view('admin.system', compact('tableCounts', 'totalFilesCount', 'phpVersion', 'laravelVersion', 'dbDriver', 'appEnv', 'isMaintenance'));
     }
 
     /**

@@ -27,19 +27,19 @@
                 <h4 class="font-sans text-[0.8rem] font-bold uppercase tracking-[2px] text-[#555] mb-[20px]">Dukungan</h4>
                 <ul class="list-none flex flex-col gap-[12px]">
                     <li><a href="#faq" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">FAQ</a></li>
-                    <li><a href="/maintenance" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Pusat Bantuan</a></li>
-                    <li><a href="/maintenance" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Kontak Kami</a></li>
-                    <li><a href="/maintenance" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Status Sistem</a></li>
+                    <li><a href="/coming-soon" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Pusat Bantuan</a></li>
+                    <li><a href="/coming-soon" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Kontak Kami</a></li>
+                    <li><a href="/coming-soon" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Status Sistem</a></li>
                 </ul>
             </div>
             <!-- Column 4: Legalitas -->
             <div>
                 <h4 class="font-sans text-[0.8rem] font-bold uppercase tracking-[2px] text-[#555] mb-[20px]">Legalitas</h4>
                 <ul class="list-none flex flex-col gap-[12px]">
-                    <li><a href="/maintenance" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Terms of Service</a></li>
-                    <li><a href="/maintenance" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Privacy Policy</a></li>
-                    <li><a href="/maintenance" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Cookie Policy</a></li>
-                    <li><a href="/maintenance" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Lisensi</a></li>
+                    <li><a href="/coming-soon" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Terms of Service</a></li>
+                    <li><a href="/coming-soon" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Privacy Policy</a></li>
+                    <li><a href="/coming-soon" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Cookie Policy</a></li>
+                    <li><a href="/coming-soon" class="text-[0.92rem] text-[#888] transition-colors duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] font-medium hover:text-white">Lisensi</a></li>
                 </ul>
             </div>
         </div>
