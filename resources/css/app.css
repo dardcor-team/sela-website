@@ -9,14 +9,14 @@
     --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-mono: 'Rubik Mono One', ui-monospace, monospace;
 
-    --color-cyan: #0089A5;
-    --color-cyan-light: #00A3C4;
-    --color-cyan-bright: #006CA5;
+    --color-cyan: #088395;
+    --color-cyan-light: #0ea5b9;
+    --color-cyan-bright: #066d7f;
     --color-muted: #666666;
 
     --shadow-neo: 6px 6px 0px #000000;
     --shadow-neo-hover: 12px 12px 0px #000000;
-    --shadow-neo-cyan: 6px 6px 0px #0089A5;
+    --shadow-neo-cyan: 6px 6px 0px #088395;
 }
 
 @layer base {

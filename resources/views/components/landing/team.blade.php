@@ -12,7 +12,7 @@
     ],
 ])
 
-<section id="team" class="py-[130px] max-[768px]:py-[70px] bg-white">
+<section id="team" class="py-[130px] max-[768px]:py-[70px] bg-white bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:50px_50px]">
     <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-5">
         <div class="text-center mb-[80px] max-[768px]:mb-[48px] reveal">
             <div class="inline-block text-[0.78rem] font-bold uppercase tracking-[2px] text-cyan mb-4">Tim Pengembang</div>

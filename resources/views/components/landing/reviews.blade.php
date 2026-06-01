@@ -1,65 +1,76 @@
 @props(['reviews' => [
-    [
-        'badge' => 'mhs',
-        'text' => '"Serius, ini game-changer buat tugas kelompok! Sebelumnya selalu ada yang numpang nama, sekarang semua kebagian tugas sesuai kemampuan dan kelihatan ngerjainnya. Drama bebas!"',
-        'name' => 'Anisa Rahmawati',
-        'role' => 'Teknik Informatika, Universitas Brawijaya',
-        'initial' => 'A',
-        'color' => 'c1',
-    ],
-    [
-        'badge' => 'dosen',
-        'text' => '"Sebagai dosen, penilaian kelompok selalu jadi tantangan. Dengan SELA, saya bisa melihat kontribusi nyata setiap mahasiswa — bukan sekadar laporan akhir yang bisa diklaim siapa saja."',
-        'name' => 'Dr. Budi Santosa, M.Kom',
-        'role' => 'Dosen, Universitas Indonesia',
-        'initial' => 'B',
-        'color' => 'c4',
-    ],
-    [
-        'badge' => 'mhs',
-        'text' => '"AI-nya bikin gue takjub. Tinggal input judul tugas besar, dalam hitungan detik langsung ada breakdown sub-tugas yang logis dan siap dibagi ke masing-masing anggota. Efisiensi banget!"',
-        'name' => 'Rizky Firmansyah',
-        'role' => 'Sistem Informasi, Institut Teknologi Bandung',
-        'initial' => 'R',
-        'color' => 'c2',
-    ],
-    [
-        'badge' => 'dosen',
-        'text' => '"Dashboard pemantauan SELA memangkas waktu saya dalam mengevaluasi kelas secara drastis. Grafik progres per kelompok sangat informatif dan membantu saya memberikan feedback yang lebih tepat sasaran."',
-        'name' => 'Prof. Siti Marlinda, Ph.D',
-        'role' => 'Dosen Senior, Universitas Gadjah Mada',
-        'initial' => 'S',
-        'color' => 'c3',
-    ],
+    ['name' => 'Irvan Aditya Kurniawan', 'text' => 'Fitur auto create subtask dan juga group menu, mungkin bisa diberikan default data di input group ketika add task sehingga tidak langsung kosong dan juga jika create subtask otomatis menggunakan ai mungkin bisa diberikan input users untuk menjelaskan flow subtask secara singkat sehingga subtask yang dibuat masih berkaitan.', 'role' => 'Mahasiswa'],
+    ['name' => 'Irwin Ahmad Wiryawan', 'text' => 'Responsif, fitur utama on-point, estetika dan pemilihan tema sangat cocok, sistem invitation bekerja dengan baik, automatic subtask berjalan dengan baik dan sangat membantu', 'role' => 'Mahasiswa'],
+    ['name' => 'Resty Setya Indrayani', 'text' => 'Fungsi aplikasi sangat bermanfaat untuk mahasiswa, dimana kita dapat mencatat tugas-tugas yang ada, tida hanya itu.. kita juga bisa langsung simpan file di task yang kita tambahkan, sangat memudahkan sehingga kita tidak perlu nyari-nyari lagi menyelam di penyimpanan disk laptop', 'role' => 'Mahasiswa'],
+    ['name' => 'Nadhiva Azwar Nur Efendy', 'text' => 'Task join grupnya yang keren, jadi ga harus menambahkan task per anak tinggal undang', 'role' => 'Mahasiswa'],
+    ['name' => 'Nur Legia Erifadina', 'text' => 'Hal yang disukai dapat mengelo tugas individu/grup dengan bisa melihat notifikasi ketika tugas mendekati deadline', 'role' => 'Mahasiswa'],
+    ['name' => 'Diaz Raharjo Muliasmara', 'text' => 'UI nya cukup nyaman dimata, disini enaknya kita bisa menambahkan ability dan bisa mengganti foto profile sesuai dengan yang kita mau. dan untuk UXnya lumayan baik juga', 'role' => 'Mahasiswa'],
+    ['name' => 'Muhammad Syauqy Arrayyan', 'text' => 'Fungsionalitas aplikasi berkerja dengan baik, tampilannya informatif dan sangat membantu', 'role' => 'Mahasiswa'],
+    ['name' => 'Nadira Ridha Aulia', 'text' => 'Tampilan aplikasi sederhana dan fungsionalitasnya informatif, mudah dioperasikan', 'role' => 'Mahasiswa'],
+    ['name' => 'Nur Aini Agusthina', 'text' => 'Invitation code, membantu mempermudah join class', 'role' => 'Mahasiswa'],
+    ['name' => 'Refa Brillian', 'text' => 'AI nya keren, tapi perlu training lagi kali yaaa. kalo ainya pinter harusnyaa akan sangat kepakee. bisa lihat on progress tugas juga keren', 'role' => 'Mahasiswa'],
 ]])
 
-<section id="reviews" class="py-[130px] max-[768px]:py-[70px] bg-black text-white rounded-t-[60px] max-[480px]:rounded-t-[36px] relative">
-    <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-5">
-        <div class="text-center mb-[80px] max-[768px]:mb-[48px] reveal">
-            <div class="inline-block text-[0.78rem] font-bold uppercase tracking-[2px] text-cyan mb-4">Testimoni Pengguna</div>
-            <h2 class="font-mono uppercase leading-[1.1] text-[3.2rem] max-[768px]:text-[2.4rem] max-[480px]:text-[1.7rem] mb-[20px] text-cyan">Dipercaya oleh<br>Mahasiswa & Dosen.</h2>
-            <p class="text-[1.1rem] max-[480px]:text-[0.95rem] max-w-[680px] mx-auto leading-[1.7] text-[#aaa]">Dengarkan langsung pengalaman mereka yang telah merasakan manfaat SELA.</p>
+<section id="reviews" class="py-[100px] bg-white relative bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:50px_50px]">
+    <div class="max-w-[1280px] mx-auto px-10">
+        <div class="text-center mb-16 reveal">
+            <h2 class="font-mono uppercase text-4xl text-black mb-4">Apa Kata Mereka?</h2>
+            <p class="text-muted text-lg">Pengalaman nyata dari pengguna SELA.</p>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-[28px] max-[480px]:gap-[20px]">
-            @foreach($reviews as $index => $review)
-                <div class="bg-[#111] border-[3px] max-[480px]:border-[2.5px] border-[#2a2a2a] rounded-[28px] max-[480px]:rounded-[20px] p-[36px] max-[480px]:p-[24px] transition-all duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] relative hover:border-cyan hover:-translate-y-[6px] hover:shadow-[0_12px_32px_rgba(9,99,126,0.25)] reveal d{{ $index + 1 }}">
-                    <span class="absolute top-[20px] max-[480px]:top-[14px] right-[20px] max-[480px]:right-[14px] text-[0.72rem] font-bold uppercase tracking-[1px] px-[12px] py-[5px] rounded-full {{ $review['badge'] === 'mhs' ? 'bg-[rgba(9,99,126,0.25)] text-cyan' : 'bg-[rgba(124,58,237,0.25)] text-[#a78bfa]' }}">
-                        {{ $review['badge'] === 'mhs' ? 'Mahasiswa' : 'Dosen' }}
-                    </span>
-                    <div class="text-[#fbbf24] text-[1.2rem] mb-[18px] tracking-[2px]">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p class="text-[1.05rem] max-[480px]:text-[0.92rem] text-[#ddd] leading-[1.75] italic mb-[28px] max-[480px]:mb-[20px]">{{ $review['text'] }}</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-[52px] h-[52px] max-[480px]:w-[42px] max-[480px]:h-[42px] rounded-full flex items-center justify-center text-[1.4rem] max-[480px]:text-[1.1rem] font-bold text-white border-[3px] max-[480px]:border-[2px] border-[#333] shrink-0" 
-                             style="{{ $review['color'] === 'c1' ? 'background: var(--color-cyan);' : ($review['color'] === 'c2' ? 'background: linear-gradient(135deg, var(--color-cyan), var(--color-cyan-bright));' : ($review['color'] === 'c3' ? 'background: #1d4ed8;' : 'background: #7c3aed;')) }}">
-                            {{ $review['initial'] }}
-                        </div>
+        
+        <div class="carousel-container relative">
+            <div id="review-carousel" class="flex gap-6 animate-marquee py-4">
+                @foreach($reviews as $review)
+                    <div class="shrink-0 w-[350px] bg-white border-[3px] border-black p-8 rounded-[24px] shadow-neo flex flex-col justify-between hover:-translate-y-2 transition-transform duration-300">
                         <div>
-                            <div class="font-bold text-[1rem] text-white">{{ $review['name'] }}</div>
-                            <div class="text-[0.85rem] text-[#777] mt-[3px]">{{ $review['role'] }}</div>
+                            <div class="text-[#fbbf24] mb-4 text-xl">★★★★★</div>
+                            <p class="text-black italic mb-6 leading-relaxed">{{ $review['text'] }}</p>
+                        </div>
+                        <div class="flex items-center gap-3 border-t border-slate-200 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-cyan-700 text-white flex items-center justify-center font-bold">
+                                {{ strtoupper(substr($review['name'], 0, 1)) }}
+                            </div>
+                            <div>
+                                <div class="font-bold text-sm">{{ $review['name'] }}</div>
+                                <div class="text-xs text-muted">{{ $review['role'] }}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+                {{-- Duplicated items for infinite marquee --}}
+                @foreach($reviews as $review)
+                    <div class="shrink-0 w-[350px] bg-white border-[3px] border-black p-8 rounded-[24px] shadow-neo flex flex-col justify-between hover:-translate-y-2 transition-transform duration-300">
+                        <div>
+                            <div class="text-[#fbbf24] mb-4 text-xl">★★★★★</div>
+                            <p class="text-black italic mb-6 leading-relaxed">{{ $review['text'] }}</p>
+                        </div>
+                        <div class="flex items-center gap-3 border-t border-slate-200 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-cyan-700 text-white flex items-center justify-center font-bold">
+                                {{ strtoupper(substr($review['name'], 0, 1)) }}
+                            </div>
+                            <div>
+                                <div class="font-bold text-sm">{{ $review['name'] }}</div>
+                                <div class="text-xs text-muted">{{ $review['role'] }}</div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </section>
+
+<style>
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+        animation: marquee 40s linear infinite;
+        display: flex;
+        width: max-content;
+    }
+    .animate-marquee:hover {
+        animation-play-state: paused;
+    }
+</style>

@@ -1,8 +1,8 @@
-<section id="features" class="py-[120px] max-[768px]:py-[60px] bg-black text-white border-t-[8px] border-black rounded-t-[60px] max-[480px]:rounded-t-[36px] -mt-[60px] max-[480px]:-mt-[36px] relative z-20">
+<section id="features" class="py-[120px] max-[768px]:py-[60px] bg-black text-white border-t-[8px] border-black rounded-t-[60px] max-[480px]:rounded-t-[36px] -mt-[60px] max-[480px]:-mt-[36px] relative z-20 bg-[linear-gradient(to_right,rgba(8,131,149,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(8,131,149,0.1)_1px,transparent_1px)] bg-[size:50px_50px]">
     <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-5">
         <div class="text-center mb-[80px] max-[768px]:mb-[48px] reveal">
             <div class="inline-block text-[0.78rem] font-bold uppercase tracking-[2px] text-cyan mb-[16px]">Fitur Unggulan</div>
-            <h2 class="text-[3.2rem] max-[768px]:text-[2.4rem] max-[480px]:text-[1.7rem] mb-[20px] text-cyan">Didesain untuk<br>Kolaborasi Nyata.</h2>
+            <h2 class="text-[3.2rem] max-[768px]:text-[2.4rem] max-[480px]:text-[1.7rem] mb-[20px] text-white">Didesain untuk<br>Kolaborasi Nyata.</h2>
             <p class="text-[1.1rem] max-[480px]:text-[0.95rem] max-w-[680px] mx-auto leading-[1.7] text-[#ccc]">Semua fitur di bawah ini saling terhubung. Coba simulasi interaktifnya dari langkah pertama hingga selesai!</p>
         </div>
 

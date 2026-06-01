@@ -15,10 +15,7 @@
                 </p>
                 
                 <div class="hero-btns reveal d2 flex gap-4 max-[480px]:gap-3 flex-wrap mb-9 max-[768px]:mb-6 max-[992px]:justify-center max-[480px]:flex-col max-[480px]:w-full max-[480px]:max-w-[300px] max-[480px]:mx-auto">
-                    <a href="https://play.google.com/store/apps/details?id=com.pdbl.sela" class="btn inline-flex items-center justify-center gap-2 py-[14px] px-[28px] max-[480px]:py-[12px] max-[480px]:px-[20px] font-mono text-[0.85rem] max-[480px]:text-[0.78rem] cursor-pointer rounded-[14px] border-[3px] border-cyan transition-all duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] whitespace-nowrap bg-cyan text-white shadow-[6px_6px_0px_#000] hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-[10px_10px_0px_#000]">
-                        Mulai Gunakan SELA Gratis
-                    </a>
-                    <a href="#how" class="btn inline-flex items-center justify-center gap-2 py-[14px] px-[28px] max-[480px]:py-[12px] max-[480px]:px-[20px] font-mono text-[0.85rem] max-[480px]:text-[0.78rem] cursor-pointer rounded-[14px] border-[3px] border-black transition-all duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] whitespace-nowrap bg-white text-black shadow-neo hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-neo-hover">
+                    <a href="#how" class="btn inline-flex items-center justify-center gap-2 py-[14px] px-[28px] max-[480px]:py-[12px] max-[480px]:px-[20px] font-mono text-[0.85rem] max-[480px]:text-[0.78rem] cursor-pointer rounded-[14px] border-[3px] border-black transition-all duration-200 ease-[cubic-bezier(0.19,1,0.22,1)] whitespace-nowrap bg-cyan text-white shadow-[6px_6px_0px_#000] hover:translate-x-[-3px] hover:translate-y-[-3px] hover:shadow-[10px_10px_0px_#000]">
                         Lihat Cara Kerja
                     </a>
                 </div>

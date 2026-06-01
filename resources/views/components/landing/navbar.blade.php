@@ -6,9 +6,9 @@
     <div class="max-w-[1280px] mx-auto px-10 max-[768px]:px-4">
         <nav class="flex items-center justify-between py-[16px] px-[32px] max-[768px]:py-[10px] max-[768px]:px-[12px]">
             <a href="#" class="logo flex items-center gap-2 font-mono text-[1.8rem] max-[480px]:text-[1.4rem] tracking-[-2px] 
-                               bg-[linear-gradient(135deg,var(--color-cyan)_0%,var(--color-cyan-bright)_50%,var(--color-cyan)_100%)] 
-                               bg-clip-text text-transparent bg-[length:200%_auto] 
-                               animate-[shimmer_3s_linear_infinite]">
+                                bg-[linear-gradient(135deg,#088395_0%,#0ea5b9_50%,#088395_100%)] 
+                                bg-clip-text text-transparent bg-[length:200%_auto] 
+                                animate-[shimmer_3s_linear_infinite]">
                 <img src="{{ asset('images/sela.png') }}" alt="Logo SELA" class="w-8 h-8 -mt-1"> SELA
             </a>
             <div class="nav-links flex gap-8 font-bold text-[0.88rem] uppercase max-[992px]:hidden">
