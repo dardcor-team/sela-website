@@ -50,12 +50,36 @@
             z-index: 100;
             display: flex;
             flex-direction: column;
+            transition: transform 0.3s ease;
         }
         .dark #sidebar { background: #0f172a; border-right-color: #334155; }
-        #main-wrapper { margin-left: 260px; min-height: 100vh; background: #f1f5f9; }
+        #main-wrapper { margin-left: 260px; min-height: 100vh; background: #f1f5f9; transition: margin-left 0.3s ease; }
         .dark #main-wrapper { background: #020617; }
         #topbar { height: 64px; background: #fff; border-bottom: 2px solid #cbd5e1; }
         .dark #topbar { background: #0f172a; border-bottom-color: #334155; }
+        
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        @media (max-width: 1024px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+            #main-wrapper {
+                margin-left: 0;
+            }
+            #sidebar-overlay.open {
+                display: block;
+            }
+        }
 
         /* Nav */
         .nav-item {
@@ -85,6 +109,8 @@
     </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <aside id="sidebar">
     <div class="p-6 border-b border-slate-200 dark:border-slate-700">
@@ -129,22 +155,31 @@
 </aside>
 
 <div id="main-wrapper">
-    <header id="topbar" class="flex items-center justify-between px-8">
-        <h1 class="text-lg font-semibold flex items-center gap-2">
-            <svg class="w-6 h-6 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
-            @yield('page_title', 'Dashboard')
-        </h1>
+    <header id="topbar" class="flex items-center justify-between px-4 lg:px-8">
+        <div class="flex items-center gap-3">
+            <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                <svg class="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <h1 class="text-lg font-semibold flex items-center gap-2">
+                <svg class="w-6 h-6 text-cyan-600 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                @yield('page_title', 'Dashboard')
+            </h1>
+        </div>
         <button onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
             <svg id="icon-sun" class="w-5 h-5 hidden dark:block text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
             <svg id="icon-moon" class="w-5 h-5 block dark:hidden text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
         </button>
     </header>
-    <main id="content" class="p-8">
+    <main id="content" class="p-4 lg:p-8 overflow-x-hidden">
         @yield('content')
     </main>
 </div>
 
     <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebar-overlay').classList.toggle('open');
+        }
         function updateThemeIcons() {
             var isDark = document.documentElement.classList.contains('dark');
             var sun = document.getElementById('icon-sun');

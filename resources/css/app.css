@@ -148,7 +148,7 @@
 }
 
 .mobile-menu .mobile-menu-panel {
-    transform: translateX(-50%) translateY(-20px);
+    transform: translateY(-20px);
 }
 
 .mobile-menu.menu-open {
@@ -157,5 +157,5 @@
 }
 
 .mobile-menu.menu-open .mobile-menu-panel {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
 }

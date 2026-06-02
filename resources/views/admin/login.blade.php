@@ -14,7 +14,7 @@
     </script>
     <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 flex items-center justify-center min-h-screen">
+<body class="bg-slate-100 dark:bg-slate-900 flex items-center justify-center min-h-screen px-4">
 
     <div class="w-full max-w-sm bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700">
         <div class="text-center mb-8">
