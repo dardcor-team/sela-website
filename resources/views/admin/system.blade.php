@@ -15,6 +15,20 @@
     </div>
 </div>
 
+{{-- Alert --}}
+@if(session('success'))
+<div class="mb-6 flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl dark:bg-emerald-900/20 dark:border-emerald-700 dark:text-emerald-300">
+    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    {{ session('success') }}
+</div>
+@endif
+@if(session('error'))
+<div class="mb-6 flex items-center gap-3 p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl dark:bg-rose-900/20 dark:border-rose-700 dark:text-rose-300">
+    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    {{ session('error') }}
+</div>
+@endif
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     {{-- Maintenance Control --}}
     <div class="card">
@@ -34,7 +48,7 @@
             @csrf
             @if($isMaintenance)
                 <input type="hidden" name="maintenance" value="0">
-                <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700">Matikan Mode Perbaikan</button>
+                <button type="submit" onclick="return confirm('Yakin ingin mematikan Mode Pemeliharaan? Aplikasi akan kembali normal.')" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700">Matikan Mode Perbaikan</button>
             @else
                 <input type="hidden" name="maintenance" value="1">
                 <button type="submit" onclick="return confirm('Yakin ingin menyalakan Mode Pemeliharaan?')" class="px-4 py-2 bg-rose-600 text-white rounded-lg font-semibold hover:bg-rose-700">Nyalakan Mode Perbaikan</button>
