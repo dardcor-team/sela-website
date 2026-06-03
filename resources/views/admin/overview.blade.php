@@ -56,11 +56,11 @@
                 </div>
             </div>
         </div>
-        <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 text-right">
+        <!-- <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 text-right">
             <a href="{{ route('admin.system') }}" class="text-sm font-bold text-cyan-600 hover:text-cyan-700 font-semibold">
                 Atur Sistem →
             </a>
-        </div>
+        </div> -->
     </div>
 </div>
 

@@ -7,6 +7,13 @@ use Tests\TestCase;
 
 class MaintenanceModeTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutVite();
+    }
+
     protected function tearDown(): void
     {
         Cache::forget('app_maintenance');
