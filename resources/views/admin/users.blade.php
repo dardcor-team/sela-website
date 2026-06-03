@@ -98,5 +98,150 @@
     </div>
 </div>
 
-{{-- Modals ... (keeping original modals but styling needs update) --}}
+{{-- ============================================================ --}}
+{{-- MODAL: Edit Role --}}
+{{-- ============================================================ --}}
+<div id="roleModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    {{-- Backdrop --}}
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeRoleModal()"></div>
+
+    {{-- Panel --}}
+    <div class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md p-6 border border-slate-200 dark:border-slate-700 animate-fade-in">
+        {{-- Header --}}
+        <div class="flex items-center gap-3 mb-6">
+            <div class="p-2 bg-cyan-100 text-cyan-700 rounded-xl">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                </svg>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Ubah Peran Pengguna</h3>
+                <p id="roleModalEmail" class="text-sm text-slate-500 dark:text-slate-400">-</p>
+            </div>
+            <button onclick="closeRoleModal()" class="ml-auto text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <form id="roleForm" method="POST">
+            @csrf
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Pilih Peran Baru</label>
+                <select name="role" id="roleSelect"
+                    class="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-cyan-500 transition">
+                    <option value="student">Mahasiswa (Student)</option>
+                    <option value="lecturer">Dosen (Lecturer)</option>
+                    <option value="super_admin">Super Admin</option>
+                </select>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button type="button" onclick="closeRoleModal()"
+                    class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    Batal
+                </button>
+                <button type="submit"
+                    class="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-semibold transition shadow">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- ============================================================ --}}
+{{-- MODAL: Konfirmasi Hapus --}}
+{{-- ============================================================ --}}
+<div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    {{-- Backdrop --}}
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeDeleteModal()"></div>
+
+    {{-- Panel --}}
+    <div class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md p-6 border border-slate-200 dark:border-slate-700 animate-fade-in">
+        {{-- Icon --}}
+        <div class="flex flex-col items-center text-center mb-6">
+            <div class="p-4 bg-rose-100 text-rose-600 rounded-2xl mb-4">
+                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Hapus Pengguna?</h3>
+            <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">
+                Tindakan ini akan menghapus akun
+                <strong id="deleteUserEmail" class="text-rose-600">-</strong>
+                secara permanen dan tidak dapat dibatalkan.
+            </p>
+        </div>
+
+        <form id="deleteForm" method="POST">
+            @csrf
+            <div class="flex gap-3 justify-center">
+                <button type="button" onclick="closeDeleteModal()"
+                    class="flex-1 px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    Batal
+                </button>
+                <button type="submit"
+                    class="flex-1 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold transition shadow">
+                    Ya, Hapus
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+<style>
+    @keyframes fade-in {
+        from { opacity: 0; transform: scale(0.95); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+    .animate-fade-in { animation: fade-in 0.2s ease-out; }
+</style>
+<script>
+    // ── Role Modal ──────────────────────────────────────────────
+    function openRoleModal(userId, email, currentRole) {
+        document.getElementById('roleModalEmail').textContent = email;
+        document.getElementById('roleSelect').value = currentRole;
+        document.getElementById('roleForm').action = `/admin/users/${userId}/update-role`;
+
+        const modal = document.getElementById('roleModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeRoleModal() {
+        const modal = document.getElementById('roleModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+
+    // ── Delete Modal ────────────────────────────────────────────
+    function confirmDelete(userId, email) {
+        document.getElementById('deleteUserEmail').textContent = email;
+        document.getElementById('deleteForm').action = `/admin/users/${userId}/delete`;
+
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+
+    // Tutup modal dengan ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeRoleModal();
+            closeDeleteModal();
+        }
+    });
+</script>
+@endpush
+
 @endsection

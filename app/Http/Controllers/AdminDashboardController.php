@@ -210,6 +210,100 @@ class AdminDashboardController extends Controller
         return back()->with('success', "Pengguna {$user->email} berhasil dihapus.");
     }
 
+    // ================================================================
+    // ACADEMIC DATA: Classes & Courses
+    // ================================================================
+
+    /**
+     * Show academic data management (classes + courses).
+     */
+    public function academic(Request $request)
+    {
+        $classSearch  = $request->input('class_search');
+        $courseSearch = $request->input('course_search');
+
+        $classesQuery = \App\Models\SchoolClass::query();
+        if ($classSearch) {
+            $classesQuery->where('name', 'ilike', "%{$classSearch}%");
+        }
+        $classes = $classesQuery->orderBy('created_at', 'desc')->paginate(10, ['*'], 'class_page')->withQueryString();
+
+        $coursesQuery = \App\Models\Course::query();
+        if ($courseSearch) {
+            $coursesQuery->where('name', 'ilike', "%{$courseSearch}%")
+                         ->orWhere('description', 'ilike', "%{$courseSearch}%");
+        }
+        $courses = $coursesQuery->orderBy('created_at', 'desc')->paginate(10, ['*'], 'course_page')->withQueryString();
+
+        return view('admin.academic', compact('classes', 'courses', 'classSearch', 'courseSearch'));
+    }
+
+    // ── Kelas ─────────────────────────────────────────────────────
+
+    public function storeClass(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:100|unique:classes,name']);
+        \App\Models\SchoolClass::create(['name' => $request->name]);
+        return back()->with('success', "Kelas '{$request->name}' berhasil ditambahkan.");
+    }
+
+    public function updateClass(Request $request, $id)
+    {
+        $class = \App\Models\SchoolClass::findOrFail($id);
+        $request->validate(['name' => 'required|string|max:100|unique:classes,name,' . $id]);
+        $class->update(['name' => $request->name]);
+        return back()->with('success', "Kelas berhasil diperbarui menjadi '{$request->name}'.");
+    }
+
+    public function deleteClass($id)
+    {
+        $class = \App\Models\SchoolClass::findOrFail($id);
+        $groupsCount = \App\Models\Group::where('class_name', $class->name)->count();
+        if ($groupsCount > 0) {
+            return back()->with('error', "Kelas '{$class->name}' tidak dapat dihapus karena masih digunakan oleh {$groupsCount} kelompok.");
+        }
+        $name = $class->name;
+        $class->delete();
+        return back()->with('success', "Kelas '{$name}' berhasil dihapus.");
+    }
+
+    // ── Mata Kuliah ───────────────────────────────────────────────
+
+    public function storeCourse(Request $request)
+    {
+        $request->validate([
+            'name'        => 'required|string|max:200|unique:courses,name',
+            'description' => 'nullable|string|max:500',
+        ]);
+        \App\Models\Course::create([
+            'name'        => $request->name,
+            'description' => $request->description,
+        ]);
+        return back()->with('success', "Mata kuliah '{$request->name}' berhasil ditambahkan.");
+    }
+
+    public function updateCourse(Request $request, $id)
+    {
+        $course = \App\Models\Course::findOrFail($id);
+        $request->validate([
+            'name'        => 'required|string|max:200|unique:courses,name,' . $id,
+            'description' => 'nullable|string|max:500',
+        ]);
+        $course->update([
+            'name'        => $request->name,
+            'description' => $request->description,
+        ]);
+        return back()->with('success', "Mata kuliah berhasil diperbarui.");
+    }
+
+    public function deleteCourse($id)
+    {
+        $course = \App\Models\Course::findOrFail($id);
+        $name = $course->name;
+        $course->delete();
+        return back()->with('success', "Mata kuliah '{$name}' berhasil dihapus.");
+    }
+
     /**
      * Show groups list.
      */
