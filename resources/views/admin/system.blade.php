@@ -33,8 +33,10 @@
         <form action="{{ route('admin.system.toggle-maintenance') }}" method="POST">
             @csrf
             @if($isMaintenance)
+                <input type="hidden" name="maintenance" value="0">
                 <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700">Matikan Mode Perbaikan</button>
             @else
+                <input type="hidden" name="maintenance" value="1">
                 <button type="submit" onclick="return confirm('Yakin ingin menyalakan Mode Pemeliharaan?')" class="px-4 py-2 bg-rose-600 text-white rounded-lg font-semibold hover:bg-rose-700">Nyalakan Mode Perbaikan</button>
             @endif
         </form>
