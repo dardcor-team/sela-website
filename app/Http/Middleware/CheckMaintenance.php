@@ -40,8 +40,8 @@ class CheckMaintenance
                 ], 503);
             }
 
-            // Redirect web requests to /maintenance
-            return redirect('/maintenance');
+            // Render the maintenance landing page for web requests
+            return response()->view('maintenance', [], 503);
         }
 
         // If not in maintenance and user visits /maintenance, redirect to home
